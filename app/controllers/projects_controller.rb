@@ -17,9 +17,11 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     if @project.save
-      project_params[:category_ids].each do |n|
-        category = Category.where(id: n)
-        @project.categories << category
+      categories = project_params[:category_ids].split(',')
+      # logger.info "HERE IS CATEGORIES: #{categories}"
+      categories.each do |n|
+          category = Category.where(id: n.to_i)
+          @project.categories << category
       end
       render json: @project, include: :categories, status: :created, location: @project
     else
@@ -52,6 +54,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def project_params
-      params.require(:project).permit(:title, :description, :image, :live, :github, :url, :deployed, :category_ids)
+      params.permit(:title, :description, :image, :live, :github, :url, :deployed, :category_ids)
     end
 end

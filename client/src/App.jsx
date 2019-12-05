@@ -141,10 +141,10 @@ function App(props) {
   }
 
   const handleProjectDelete = async (id) => {
-    await destroyProject(id);
+    let destroyedProject = await destroyProject(id);
     setProjects(prev => ([
       prev.filter(project => (
-        project.id !== id
+        project.id !== destroyedProject.id
       ))
     ]))
   }
