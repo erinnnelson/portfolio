@@ -26,6 +26,16 @@ export const getProjects = async() => {
   return resp.data
 }
 
+export const getCategories = async() => {
+  const resp = await api.get('/categories')
+  return resp.data
+}
+
+export const createCategory = async(data) => {
+  const resp = await api.post('/categories', data)
+  return resp.data
+}
+
 export const updateProject = async(id, data) => {
   const resp = await api.put(`/projects/${id}`, data)
   return resp.data

@@ -4,23 +4,6 @@ import { getProjects, destroyProject } from '../services/api-helper';
 
 export default (props) => {
 
-  // const [projects, setProjects] = useState([])
-
-  // const callProjects = async () => {
-  //   let res = await getProjects();
-  //   setProjects(res);
-  // }
-
-  // const handleProjectDelete = async (id) => {
-  //   let res = await destroyProject(id);
-  //   console.log(res)
-  // }
-
-  // useEffect(() => {
-  //   callProjects();
-
-  // }, [])
-
   return (
 
 
@@ -41,7 +24,18 @@ export default (props) => {
       ))}
 
 
-      <NewProjectForm />
+      <NewProjectForm
+        handleChange={props.handleProjectFormDataChange}
+        handleCheckboxChange={props.handleProjectFormDataCheckboxChange}
+        handleDropFileChange={props.handleProjectFormDataDropFileChange}
+        projectFormData={props.projectFormData}
+        handleSubmit={props.handleProjectSubmit}
+        categories={props.categories}
+        handleCategoryFormDataChange={props.handleCategoryFormDataChange}
+        handleCategoriesChange={props.handleProjectFormDataCategoriesChange}
+        categoryFormData={props.categoryFormData}
+        handleCategorySubmit={props.handleCategorySubmit}
+      />
     </div>
   )
 }

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Main from './components/Main'
-import { loginUser, registerUser, getProjects, destroyProject } from './services/api-helper'
+import { loginUser, registerUser, getProjects, destroyProject, createProject, getCategories, createCategory } from './services/api-helper'
 import Login from './components/Login'
-// import Register from './components/Register'
 import decode from 'jwt-decode';
-
 import './App.css';
+// import Register from './components/Register'
 
 function App(props) {
 
   const [currentUser, setCurrentUser] = useState(null)
   const [authFormData, setAuthFormData] = useState({
-    username: "",
-    email: "",
-    password: ""
+    username: '',
+    email: '',
+    password: ''
   })
 
   const checkUser = () => {
@@ -25,25 +25,6 @@ function App(props) {
       setCurrentUser(user);
       console.log(user)
     }
-  }
-
-  const [projects, setProjects] = useState([])
-
-  const callProjects = async () => {
-    let res = await getProjects();
-    console.log(res);
-    setProjects(res);
-  }
-
-  useEffect(() => {
-    checkUser();
-    callProjects();
-
-  }, [])
-
-  const handleProjectDelete = async (id) => {
-    let res = await destroyProject(id);
-    console.log(res)
   }
 
   const handleLogin = async () => {
@@ -65,60 +46,160 @@ function App(props) {
 
   const authHandleChange = (e) => {
     const { name, value } = e.target;
-    setAuthFormData(prevAuthFormData => ({
-      ...prevAuthFormData,
+    setAuthFormData(prev => ({
+      ...prev,
       [name]: value
     }))
   }
 
+  const getDateToday = () => {
+    const today = new Date;
+    return `${today.getFullYear()}-${(today.getMonth() + 1)}-${today.getDate()}`;
+  }
 
+  const [projects, setProjects] = useState([])
 
-  // newTeacher = async (e) => {
-  //   e.preventDefault();
-  //   const teacher = await createTeacher(this.state.teacherForm);
-  //   this.setState(prevState => ({
-  //     teachers: [...prevState.teachers, teacher],
-  //     teacherForm: {
-  //       name: "",
-  //       photo: ""
-  //     }
-  //   }))
-  // }
+  const [projectFormData, setProjectFormData] = useState({
+    title: '',
+    description: '',
+    live: false,
+    github: '',
+    url: '',
+    deployed: getDateToday(),
+    image: null,
+    categories: []
+  })
 
-  // editTeacher = async () => {
-  //   const { teacherForm } = this.state
-  //   await updateTeacher(teacherForm.id, teacherForm);
-  //   this.setState(prevState => (
-  //     {
-  //       teachers: prevState.teachers.map(teacher => teacher.id === teacherForm.id ? teacherForm : teacher),
-  //     }
-  //   ))
-  // }
+  const callProjects = async () => {
+    let res = await getProjects();
+    setProjects(res);
+  }
 
-  // deleteTeacher = async (id) => {
-  //   await destroyTeacher(id);
-  //   this.setState(prevState => ({
-  //     teachers: prevState.teachers.filter(teacher => teacher.id !== id)
-  //   }))
-  // }
+  const handleProjectFormDataChange = (e) => {
+    const { name, value } = e.target;
+    setProjectFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
-  // handleFormChange = (e) => {
-  //   const { name, value } = e.target;
-  //   this.setState(prevState => ({
-  //     teacherForm: {
-  //       ...prevState.teacherForm,
-  //       [name]: value
-  //     }
-  //   }))
-  // }
+  const handleProjectFormDataCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setProjectFormData(prev => ({
+      ...prev,
+      [name]: checked
+    }))
+  }
 
-  // mountEditForm = async (id) => {
-  //   const teachers = await readAllTeachers();
-  //   const teacher = teachers.find(el => el.id === parseInt(id));
-  //   this.setState({
-  //     teacherForm: teacher
-  //   });
-  // }
+  const handleProjectFormDataCategoriesChange = (e, i) => {
+    const { name, checked } = e.target;
+    setProjectFormData(prev => {
+      const newArr = prev.categories;
+      newArr[i] = {
+        ...newArr[i],
+        checked: checked
+      }
+      return {
+        ...prev,
+        categories: newArr
+      }
+    })
+  }
+
+  const handleProjectFormDataDropFileChange = (files) => {
+    setProjectFormData(prev => ({
+      ...prev,
+      image: files[0]
+    }));
+  };
+
+  const compileProject = () => {
+    let data = new FormData();
+    data.append('title', projectFormData.title);
+    data.append('description', projectFormData.description);
+    data.append('live', projectFormData.live);
+    data.append('github', projectFormData.github);
+    data.append('url', projectFormData.url);
+    data.append('deployed', projectFormData.deployed);
+    data.append('image', projectFormData.image);
+    data.append('category_ids', projectFormData.categories.map(category => {
+      if (category.checked) {
+        return category.id
+      }
+    }))
+    return data;
+  }
+
+  const handleProjectSubmit = async (e) => {
+    e.preventDefault();
+    const projectData = compileProject();
+    // for (var pair of projectData.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
+    const res = await createProject(projectData);
+    setProjects(prev => ([...prev, res]))
+  }
+
+  const handleProjectDelete = async (id) => {
+    await destroyProject(id);
+    setProjects(prev => ([
+      prev.filter(project => (
+        project.id !== id
+      ))
+    ]))
+  }
+
+  const [categories, setCategories] = useState([])
+
+  const [categoryFormData, setCategoryFormData] = useState({
+    name: ''
+  })
+
+  const callCategories = async () => {
+    let res = await getCategories();
+    setCategories(res);
+    setProjectFormData(prev => ({
+      ...prev,
+      categories: res.map(category => ({
+        name: category.name,
+        id: category.id,
+        checked: false
+      }))
+    }))
+  }
+
+  const handleCategoryFormDataChange = (e) => {
+    const { name, value } = e.target;
+    setCategoryFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault();
+    const res = await createCategory(categoryFormData);
+    setCategories(prev => ([...prev, res]))
+    setProjectFormData(prev => ({
+      ...prev,
+      categories: [...prev.categories, {
+        name: res.name,
+        id: res.id,
+        checked: false
+      }]
+    }))
+  }
+
+  // const [skillFormData, setSkillFormData] = useState({
+  //   name: ''
+  // })
+
+  useEffect(() => {
+    checkUser();
+    callProjects();
+    callCategories();
+
+  }, [])
 
   // -------------- AUTH ------------------
 
@@ -128,33 +209,27 @@ function App(props) {
 
   return (
     <div className="App">
-
-
-
-
       {/* <Register
           handleRegister={handleRegister}
           handleChange={authHandleChange}
           formData={authFormData} /> */}
 
-
-      {/* <header>
-        <h1>
-          <Link to='/' onClick={() => this.setState({
-          teacherForm: {
-            name: "",
-            photo: ""
-          }
-          })}>School App</Link>
-        </h1>
-
-      </header> */}
       <Route exact path="/" render={() => (
         <Main
           currentUser={currentUser}
           handleLogout={handleLogout}
           projects={projects}
           handleProjectDelete={handleProjectDelete}
+          handleProjectFormDataChange={handleProjectFormDataChange}
+          handleProjectFormDataCheckboxChange={handleProjectFormDataCheckboxChange}
+          handleProjectFormDataDropFileChange={handleProjectFormDataDropFileChange}
+          handleProjectFormDataCategoriesChange={handleProjectFormDataCategoriesChange}
+          handleCategoryFormDataChange={handleCategoryFormDataChange}
+          projectFormData={projectFormData}
+          handleProjectSubmit={handleProjectSubmit}
+          categories={categories}
+          categoryFormData={categoryFormData}
+          handleCategorySubmit={handleCategorySubmit}
         />
       )} />
 
@@ -164,46 +239,8 @@ function App(props) {
           handleChange={authHandleChange}
           formData={authFormData}
         />
-        // <div>
-        //   {currentUser
-        //     ?
-        //     <>
-        //       <p>{currentUser.username}</p>
-        //       <button onClick={handleLogout}>logout</button>
-        //       <p>Current Projects</p>
-        //     </>
-        //     :
-        //     <Login
-        //       handleLogin={handleLogin}
-        //       handleChange={authHandleChange}
-        //       formData={authFormData}
-        //     />
-        //   }
-        // </div>
       )} />
-      {/* <Route exact path="/register" render={() => (
-        <Register
-          handleRegister={handleRegister}
-          handleChange={authHandleChange}
-          formData={authFormData} />)} /> */}
-      {/* <Route
-        exact path="/"
-        render={() => (
-          <TeachersView
-            teachers={this.state.teachers}
-            teacherForm={this.state.teacherForm}
-            handleFormChange={this.handleFormChange}
-            newTeacher={this.newTeacher} />
-        )}
-      /> */}
-      {/* <Route
-          path="/new/teacher"
-          render={() => (
-            <CreateTeacher
-              handleFormChange={this.handleFormChange}
-              teacherForm={this.state.teacherForm}
-              newTeacher={this.newTeacher} />
-          )} /> */}
+
     </div>
   );
 }

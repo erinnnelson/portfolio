@@ -4,21 +4,24 @@ class ProjectsController < ApplicationController
   # GET /projects
   def index
     @projects = Project.all
-    render json: @projects
+    render json: @projects, include: :categories
   end
 
   # GET /projects/1
   def show
     @project = Project.find(params[:id])
-    render json: @project
+    render json: @project, include: :categories
   end
 
   # POST /projects
   def create
     @project = Project.new(project_params)
-
     if @project.save
-      render json: @project, status: :created, location: @project
+      project_params[:category_ids].each do |n|
+        category = Category.where(id: n)
+        @project.categories << category
+      end
+      render json: @project, include: :categories, status: :created, location: @project
     else
       render json: @project.errors, status: :unprocessable_entity
     end
@@ -49,6 +52,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def project_params
-      params.permit(:title, :description, :image, :live, :github, :url, :deployed)
+      params.require(:project).permit(:title, :description, :image, :live, :github, :url, :deployed, :category_ids)
     end
 end
