@@ -103,6 +103,7 @@ export default (props) => {
       <br />
       <NewSkillForm
         handleChange={props.handleSkillFormDataChange}
+        handleDropFileChange={props.handleSkillFormDataDropFileChange}
         skillFormData={props.skillFormData}
         handleSubmit={props.handleSkillSubmit}
       />

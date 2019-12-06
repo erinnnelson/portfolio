@@ -27,6 +27,7 @@ export default (props) => {
         handleChange={props.handleProjectFormDataChange}
         handleCheckboxChange={props.handleProjectFormDataCheckboxChange}
         handleDropFileChange={props.handleProjectFormDataDropFileChange}
+        handleSkillFormDataDropFileChange={props.handleSkillFormDataDropFileChange}
         projectFormData={props.projectFormData}
         handleSubmit={props.handleProjectSubmit}
         categories={props.categories}

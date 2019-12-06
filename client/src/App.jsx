@@ -236,12 +236,13 @@ function App(props) {
 
   const callSkills = async () => {
     let res = await getSkills();
+    console.log(res)
     // setSkills(res);
     setProjectFormData(prev => ({
       ...prev,
       skills: res.map(skill => ({
         name: skill.name,
-        image: res.image,
+        image: skill.image,
         id: skill.id,
         checked: false
       }))
@@ -263,9 +264,20 @@ function App(props) {
     }));
   };
 
+  const compileSkill = () => {
+    let data = new FormData();
+    data.append('name', skillFormData.name);
+    data.append('image', skillFormData.image);
+    return data;
+  }
+
   const handleSkillSubmit = async (e) => {
     e.preventDefault();
-    const res = await createSkill(skillFormData);
+    const skillData = compileSkill();
+    // for (var pair of skillData.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
+    const res = await createSkill(skillData);
     // setSkills(prev => ([...prev, res]))
     setProjectFormData(prev => ({
       ...prev,
@@ -307,6 +319,7 @@ function App(props) {
           handleProjectFormDataChange={handleProjectFormDataChange}
           handleProjectFormDataCheckboxChange={handleProjectFormDataCheckboxChange}
           handleProjectFormDataDropFileChange={handleProjectFormDataDropFileChange}
+          handleSkillFormDataDropFileChange={handleSkillFormDataDropFileChange}
           projectFormData={projectFormData}
           handleProjectSubmit={handleProjectSubmit}
           handleProjectFormDataModelsCheckboxChange={handleProjectFormDataModelsCheckboxChange}
