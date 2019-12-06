@@ -10,6 +10,7 @@ class SkillsController < ApplicationController
 
   # GET /skills/1
   def show
+    @skill = Skill.find(params[:id])
     render json: @skill
   end
 
@@ -26,6 +27,7 @@ class SkillsController < ApplicationController
 
   # PATCH/PUT /skills/1
   def update
+    @skill = Skill.find(params[:id])
     if @skill.update(skill_params)
       render json: @skill
     else
@@ -35,14 +37,16 @@ class SkillsController < ApplicationController
 
   # DELETE /skills/1
   def destroy
+    @skill = Skill.find(params[:id])
     @skill.destroy
+    render json: @skill, status: :ok
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_skill
-      @skill = Skill.find(params[:id])
-    end
+    # def set_skill
+    #   @skill = Skill.find(params[:id])
+    # end
 
     # Only allow a trusted parameter "white list" through.
     def skill_params

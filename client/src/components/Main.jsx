@@ -16,10 +16,9 @@ export default (props) => {
           <p>{project.title}</p>
           <p>{project.description}</p>
           <p>{project.category}</p>
-          <img src={project.image} alt="" />
+          <img className ='project-images' src={project.image} alt="" />
           <p>{project.url}</p>
-
-          <button onClick={() => { props.handleProjectDelete(project.id) }}>delete</button>
+          <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
         </div>
       ))}
 
@@ -32,9 +31,13 @@ export default (props) => {
         handleSubmit={props.handleProjectSubmit}
         categories={props.categories}
         handleCategoryFormDataChange={props.handleCategoryFormDataChange}
-        handleCategoriesChange={props.handleProjectFormDataCategoriesChange}
+        handleModelsCheckboxChange={props.handleProjectFormDataModelsCheckboxChange}
         categoryFormData={props.categoryFormData}
         handleCategorySubmit={props.handleCategorySubmit}
+        skills={props.skills}
+        handleSkillFormDataChange={props.handleSkillFormDataChange}
+        skillFormData={props.skillFormData}
+        handleSkillSubmit={props.handleSkillSubmit}
       />
     </div>
   )

@@ -17,6 +17,11 @@ textarea {
   resize: none;
 }
 
-img {
+.project-images {
   width: 300px;
+}
+
+.skill-images {
+  width: 25px;
+  display: inline;
 }

@@ -4,13 +4,13 @@ class ProjectsController < ApplicationController
   # GET /projects
   def index
     @projects = Project.all
-    render json: @projects, include: :categories
+    render json: @projects, include: [:categories, :skills]
   end
 
   # GET /projects/1
   def show
     @project = Project.find(params[:id])
-    render json: @project, include: :categories
+    render json: @project, include: [:categories, :skills]
   end
 
   # POST /projects
@@ -18,12 +18,18 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     if @project.save
       categories = project_params[:category_ids].split(',')
-      # logger.info "HERE IS CATEGORIES: #{categories}"
+      @project.categories = []
       categories.each do |n|
-          category = Category.where(id: n.to_i)
-          @project.categories << category
+        category = Category.where(id: n.to_i)
+        @project.categories << category
       end
-      render json: @project, include: :categories, status: :created, location: @project
+      skills = project_params[:skill_ids].split(',')
+      @project.skills = []
+      skills.each do |n|
+        skill = Skill.where(id: n.to_i)
+        @project.skills << skill
+      end
+      render json: @project, include: [:categories, :skills], status: :created, location: @project
     else
       render json: @project.errors, status: :unprocessable_entity
     end
@@ -33,7 +39,7 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     if @project.update(project_params)
-      render json: @project
+      render json: @project, include: [:categories, :skills]
     else
       render json: @project.errors, status: :unprocessable_entity
     end
@@ -54,6 +60,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def project_params
-      params.permit(:title, :description, :image, :live, :github, :url, :deployed, :category_ids)
+      params.permit(:title, :description, :image, :live, :github, :url, :deployed, :category_ids, :skill_ids)
     end
 end

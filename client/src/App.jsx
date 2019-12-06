@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Main from './components/Main'
-import { loginUser, registerUser, getProjects, destroyProject, createProject, getCategories, createCategory } from './services/api-helper'
+import { loginUser, registerUser, getProjects, destroyProject, createProject, getCategories, createCategory, getSkills, createSkill } from './services/api-helper'
 import Login from './components/Login'
 import decode from 'jwt-decode';
 import './App.css';
@@ -11,7 +11,10 @@ import './App.css';
 
 function App(props) {
 
+  // USER AUTH
+
   const [currentUser, setCurrentUser] = useState(null)
+
   const [authFormData, setAuthFormData] = useState({
     username: '',
     email: '',
@@ -52,12 +55,25 @@ function App(props) {
     }))
   }
 
-  const getDateToday = () => {
-    const today = new Date;
-    return `${today.getFullYear()}-${(today.getMonth() + 1)}-${today.getDate()}`;
-  }
+  // PROJECTS
+
+  // GET PROJECTS
 
   const [projects, setProjects] = useState([])
+
+  const getDateToday = () => {
+    const today = new Date;
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = `0${dd}`
+    }
+    if (mm < 10) {
+      mm = `0${mm}`
+    }
+    return `${yyyy}-${mm}-${dd}`;
+  }
 
   const [projectFormData, setProjectFormData] = useState({
     title: '',
@@ -67,13 +83,16 @@ function App(props) {
     url: '',
     deployed: getDateToday(),
     image: null,
-    categories: []
+    categories: [],
+    skills: []
   })
 
   const callProjects = async () => {
     let res = await getProjects();
     setProjects(res);
   }
+
+  // POST NEW PROJECT
 
   const handleProjectFormDataChange = (e) => {
     const { name, value } = e.target;
@@ -91,17 +110,17 @@ function App(props) {
     }))
   }
 
-  const handleProjectFormDataCategoriesChange = (e, i) => {
-    const { name, checked } = e.target;
+  const handleProjectFormDataModelsCheckboxChange = (e, i, model) => {
+    const { checked } = e.target;
     setProjectFormData(prev => {
-      const newArr = prev.categories;
+      const newArr = prev[model];
       newArr[i] = {
         ...newArr[i],
         checked: checked
       }
       return {
         ...prev,
-        categories: newArr
+        [model]: newArr
       }
     })
   }
@@ -115,6 +134,20 @@ function App(props) {
 
   const compileProject = () => {
     let data = new FormData();
+    let categoryIdsString = ''
+    projectFormData.categories.forEach(category => {
+      if (category.checked) {
+        categoryIdsString += `${category.id},`
+      }
+    })
+    let skillIdsString = ''
+    projectFormData.skills.forEach(skill => {
+      if (skill.checked) {
+        skillIdsString += `${skill.id},`
+      }
+    })
+    categoryIdsString = categoryIdsString.slice(0, -1)
+    console.log(categoryIdsString)
     data.append('title', projectFormData.title);
     data.append('description', projectFormData.description);
     data.append('live', projectFormData.live);
@@ -122,16 +155,14 @@ function App(props) {
     data.append('url', projectFormData.url);
     data.append('deployed', projectFormData.deployed);
     data.append('image', projectFormData.image);
-    data.append('category_ids', projectFormData.categories.map(category => {
-      if (category.checked) {
-        return category.id
-      }
-    }))
+    data.append('category_ids', categoryIdsString)
+    data.append('skill_ids', skillIdsString)
     return data;
   }
 
   const handleProjectSubmit = async (e) => {
     e.preventDefault();
+    console.log(projectFormData)
     const projectData = compileProject();
     // for (var pair of projectData.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
@@ -140,16 +171,20 @@ function App(props) {
     setProjects(prev => ([...prev, res]))
   }
 
+  // PROJECT DELETE
+
   const handleProjectDelete = async (id) => {
     let destroyedProject = await destroyProject(id);
-    setProjects(prev => ([
+    setProjects(prev => (
       prev.filter(project => (
         project.id !== destroyedProject.id
       ))
-    ]))
+    ))
   }
 
-  const [categories, setCategories] = useState([])
+  // CATEGORIES
+
+  // const [categories, setCategories] = useState([])
 
   const [categoryFormData, setCategoryFormData] = useState({
     name: ''
@@ -157,7 +192,7 @@ function App(props) {
 
   const callCategories = async () => {
     let res = await getCategories();
-    setCategories(res);
+    // setCategories(res);
     setProjectFormData(prev => ({
       ...prev,
       categories: res.map(category => ({
@@ -179,7 +214,7 @@ function App(props) {
   const handleCategorySubmit = async (e) => {
     e.preventDefault();
     const res = await createCategory(categoryFormData);
-    setCategories(prev => ([...prev, res]))
+    // setCategories(prev => ([...prev, res]))
     setProjectFormData(prev => ({
       ...prev,
       categories: [...prev.categories, {
@@ -190,15 +225,64 @@ function App(props) {
     }))
   }
 
-  // const [skillFormData, setSkillFormData] = useState({
-  //   name: ''
-  // })
+  // SKILLS
+
+  // const [skills, setSkills] = useState([])
+
+  const [skillFormData, setSkillFormData] = useState({
+    name: '',
+    image: null,
+  })
+
+  const callSkills = async () => {
+    let res = await getSkills();
+    // setSkills(res);
+    setProjectFormData(prev => ({
+      ...prev,
+      skills: res.map(skill => ({
+        name: skill.name,
+        image: res.image,
+        id: skill.id,
+        checked: false
+      }))
+    }))
+  }
+
+  const handleSkillFormDataChange = (e) => {
+    const { name, value } = e.target;
+    setSkillFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSkillFormDataDropFileChange = (files) => {
+    setSkillFormData(prev => ({
+      ...prev,
+      image: files[0]
+    }));
+  };
+
+  const handleSkillSubmit = async (e) => {
+    e.preventDefault();
+    const res = await createSkill(skillFormData);
+    // setSkills(prev => ([...prev, res]))
+    setProjectFormData(prev => ({
+      ...prev,
+      skills: [...prev.skills, {
+        name: res.name,
+        image: res.image,
+        id: res.id,
+        checked: false
+      }]
+    }))
+  }
 
   useEffect(() => {
     checkUser();
     callProjects();
     callCategories();
-
+    callSkills();
   }, [])
 
   // -------------- AUTH ------------------
@@ -223,13 +307,17 @@ function App(props) {
           handleProjectFormDataChange={handleProjectFormDataChange}
           handleProjectFormDataCheckboxChange={handleProjectFormDataCheckboxChange}
           handleProjectFormDataDropFileChange={handleProjectFormDataDropFileChange}
-          handleProjectFormDataCategoriesChange={handleProjectFormDataCategoriesChange}
-          handleCategoryFormDataChange={handleCategoryFormDataChange}
           projectFormData={projectFormData}
           handleProjectSubmit={handleProjectSubmit}
-          categories={categories}
+          handleProjectFormDataModelsCheckboxChange={handleProjectFormDataModelsCheckboxChange}
+          handleCategoryFormDataChange={handleCategoryFormDataChange}
+          // categories={categories}
           categoryFormData={categoryFormData}
           handleCategorySubmit={handleCategorySubmit}
+          handleSkillFormDataChange={handleSkillFormDataChange}
+          // skills={skills}
+          skillFormData={skillFormData}
+          handleSkillSubmit={handleSkillSubmit}
         />
       )} />
 

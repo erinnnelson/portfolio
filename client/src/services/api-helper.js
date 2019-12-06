@@ -26,6 +26,16 @@ export const getProjects = async() => {
   return resp.data
 }
 
+export const updateProject = async(id, data) => {
+  const resp = await api.put(`/projects/${id}`, data)
+  return resp.data
+}
+
+export const destroyProject = async (id) => {
+  const resp = await api.delete(`/projects/${id}`)
+  return resp.data
+}
+
 export const getCategories = async() => {
   const resp = await api.get('/categories')
   return resp.data
@@ -36,12 +46,32 @@ export const createCategory = async(data) => {
   return resp.data
 }
 
-export const updateProject = async(id, data) => {
-  const resp = await api.put(`/projects/${id}`, data)
+export const updateCategory = async(id, data) => {
+  const resp = await api.put(`/categories/${id}`, data)
   return resp.data
 }
 
-export const destroyProject = async (id) => {
-  const resp = await api.delete(`/projects/${id}`)
+export const destroyCategory = async (id) => {
+  const resp = await api.delete(`/categories/${id}`)
+  return resp.data
+}
+
+export const getSkills = async() => {
+  const resp = await api.get('/skills')
+  return resp.data
+}
+
+export const createSkill = async(data) => {
+  const resp = await api.post('/skills', data)
+  return resp.data
+}
+
+export const updateSkill = async(id, data) => {
+  const resp = await api.put(`/skills/${id}`, data)
+  return resp.data
+}
+
+export const destroySkill = async (id) => {
+  const resp = await api.delete(`/skills/${id}`)
   return resp.data
 }

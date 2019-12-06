@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NewCategoryForm from './NewCategoryForm'
+import NewSkillForm from './NewSkillForm'
 import { DropzoneArea } from 'material-ui-dropzone'
 
 
@@ -31,16 +32,16 @@ export default (props) => {
           <input
             name={category.name}
             type='checkbox'
-            onChange={(e) => { props.handleCategoriesChange(e, i) }}
+            onChange={(e) => { props.handleModelsCheckboxChange(e, i, 'categories') }}
           />
         </div>
       ))}
       <br />
-      {/* <NewCategoryForm
+      <NewCategoryForm
         handleChange={props.handleCategoryFormDataChange}
         categoryFormData={props.categoryFormData}
         handleSubmit={props.handleCategorySubmit}
-      /> */}
+      />
       <label>Live?</label><br />
       <input
         name='live'
@@ -87,6 +88,24 @@ export default (props) => {
         showPreviewsInDropzone={true}
         dropzoneText={''}
       /><br />
+      <label htmlFor="">Skills</label><br />
+      {props.projectFormData.skills && props.projectFormData.skills.map((skill, i) => (
+        <div key={skill.id}>
+          <label>{skill.name}</label>
+          <img className ='skill-images' src={skill.image} alt="" />
+          <input
+            name={skill.name}
+            type='checkbox'
+            onChange={(e) => { props.handleModelsCheckboxChange(e, i, 'skills') }}
+          />
+        </div>
+      ))}
+      <br />
+      <NewSkillForm
+        handleChange={props.handleSkillFormDataChange}
+        skillFormData={props.skillFormData}
+        handleSubmit={props.handleSkillSubmit}
+      />
       <button onClick={props.handleSubmit}>create project</button>
     </div>
   )
