@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Main from './components/Main'
-import { loginUser, registerUser, getProjects, destroyProject, createProject, getCategories, createCategory, getSkills, createSkill } from './services/api-helper'
+import { loginUser, registerUser, getProjects, destroyProject, updateProject, createProject, getCategories, createCategory, getSkills, createSkill } from './services/api-helper'
 import Login from './components/Login'
 import decode from 'jwt-decode';
 import './App.css';
@@ -171,8 +171,6 @@ function App(props) {
     setProjects(prev => ([...prev, res]))
   }
 
-  // PROJECT DELETE
-
   const handleProjectDelete = async (id) => {
     let destroyedProject = await destroyProject(id);
     setProjects(prev => (
@@ -180,6 +178,20 @@ function App(props) {
         project.id !== destroyedProject.id
       ))
     ))
+  }
+
+  const handleProjectUpdate = async (e, id) => {
+    e.preventDefault();
+    console.log(projectFormData)
+    const projectData = compileProject();
+    let res = await updateProject(id, projectData);
+    setProjects(prev => prev.map(project => {
+      if (project.id === res.id) {
+        return res;
+      } else {
+        return project
+      }
+    }))
   }
 
   // CATEGORIES
@@ -236,7 +248,6 @@ function App(props) {
 
   const callSkills = async () => {
     let res = await getSkills();
-    console.log(res)
     // setSkills(res);
     setProjectFormData(prev => ({
       ...prev,
@@ -331,6 +342,7 @@ function App(props) {
           // skills={skills}
           skillFormData={skillFormData}
           handleSkillSubmit={handleSkillSubmit}
+          handleProjectUpdate={handleProjectUpdate}
         />
       )} />
 

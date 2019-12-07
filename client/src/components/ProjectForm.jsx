@@ -1,6 +1,6 @@
 import React from 'react';
-import NewCategoryForm from './NewCategoryForm'
-import NewSkillForm from './NewSkillForm'
+import CategoryForm from './CategoryForm'
+import SkillForm from './SkillForm'
 import { DropzoneArea } from 'material-ui-dropzone'
 
 
@@ -34,14 +34,16 @@ export default (props) => {
             type='checkbox'
             onChange={(e) => { props.handleModelsCheckboxChange(e, i, 'categories') }}
           />
+          <button>edit</button>
+          <button>delete</button>
         </div>
       ))}
       <br />
-      <NewCategoryForm
+      {/* <CategoryForm
         handleChange={props.handleCategoryFormDataChange}
         categoryFormData={props.categoryFormData}
         handleSubmit={props.handleCategorySubmit}
-      />
+      /> */}
       <label>Live?</label><br />
       <input
         name='live'
@@ -79,34 +81,38 @@ export default (props) => {
           files={projectFormData.image}
           onChange={handleBasicFileChange}
         /><br /> */}
-      <DropzoneArea
-        onChange={props.handleDropFileChange}
-        maxFileSize={30000000}
-        filesLimit={1}
-        acceptedFiles={['image/*']}
-        showPreviews={false}
-        showPreviewsInDropzone={true}
-        dropzoneText={''}
-      /><br />
+      <div className='project-image-drops'>
+        <DropzoneArea
+          onChange={props.handleDropFileChange}
+          maxFileSize={30000000}
+          filesLimit={1}
+          acceptedFiles={['image/*']}
+          showPreviews={false}
+          showPreviewsInDropzone={true}
+          dropzoneText={''}
+        />
+      </div>
       <label htmlFor="">Skills</label><br />
       {props.projectFormData.skills && props.projectFormData.skills.map((skill, i) => (
         <div key={skill.id}>
-          <label>{skill.name}</label>
-          <img className ='skill-images' src={skill.image} alt="" />
           <input
             name={skill.name}
             type='checkbox'
             onChange={(e) => { props.handleModelsCheckboxChange(e, i, 'skills') }}
           />
+          <img className='skill-images' src={skill.image} title={skill.name} alt={skill.name} />
+          <label>{skill.name}</label>
+          <button>edit</button>
+          <button>delete</button>
         </div>
       ))}
       <br />
-      <NewSkillForm
+      {/* <SkillForm
         handleChange={props.handleSkillFormDataChange}
         handleDropFileChange={props.handleSkillFormDataDropFileChange}
         skillFormData={props.skillFormData}
         handleSubmit={props.handleSkillSubmit}
-      />
+      /> */}
       <button onClick={props.handleSubmit}>create project</button>
     </div>
   )

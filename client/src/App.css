@@ -17,8 +17,23 @@ textarea {
   resize: none;
 }
 
+.project-containers {
+  width: 400px;
+  margin: 0 auto 30px auto;
+}
+
+.project-cards {
+  border: 1px solid black;
+
+}
+
 .project-images {
   width: 300px;
+}
+
+.project-image-drops {
+  width: 500px;
+  margin: 0 auto;
 }
 
 .skill-images {

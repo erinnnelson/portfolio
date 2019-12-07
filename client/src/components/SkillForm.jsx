@@ -14,6 +14,7 @@ export default (props) => {
         value={props.skillFormData.name}
         onChange={props.handleChange}
       /> <br />
+      <div className='project-image-drops'>
       <DropzoneArea
         onChange={props.handleDropFileChange}
         maxFileSize={30000000}
@@ -22,7 +23,8 @@ export default (props) => {
         showPreviews={false}
         showPreviewsInDropzone={true}
         dropzoneText={''}
-      /><br />
+        />
+        </div>
       <button onClick={props.handleSubmit}>add</button>
     </div>
   )

@@ -39,6 +39,18 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     if @project.update(project_params)
+      categories = project_params[:category_ids].split(',')
+      @project.categories = []
+      categories.each do |n|
+        category = Category.where(id: n.to_i)
+        @project.categories << category
+      end
+      skills = project_params[:skill_ids].split(',')
+      @project.skills = []
+      skills.each do |n|
+        skill = Skill.where(id: n.to_i)
+        @project.skills << skill
+      end
       render json: @project, include: [:categories, :skills]
     else
       render json: @project.errors, status: :unprocessable_entity
