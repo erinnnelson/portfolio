@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 
 // This component handles our login form and has a link to the register form
-export default (props) => {
+function Login(props) {
+  props.currentUser && props.history.push('/')
 
   return (
     <div className="auth-container">
@@ -23,3 +25,5 @@ export default (props) => {
     </div>
   );
 }
+
+export default withRouter(Login);;

@@ -4,4 +4,5 @@ class ProjectSerializer < ActiveModel::Serializer
   def image
     object.image.service_url if object.image.attached?
   end
+  
 end

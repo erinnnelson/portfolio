@@ -10,7 +10,18 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   def show
     @project = Project.find(params[:id])
-    render json: @project, include: [:categories, :skills]
+    @skills = Skill.all.with_attached_image
+
+      skills_with_images = @skills.map do |skill|
+      skill.as_json.merge({ image: url_for(skill.image) })
+    end
+
+    # skills_with_images = @project.skills.map do |skill_sans_image| 
+    #   skill = @skills.select {|skill_with_image| skill_with_image.id == skill_sans_image.id}
+    #   {skill: skill}
+    # end
+
+    render json: @project, include: [:categories, skills_with_images]
   end
 
   # POST /projects

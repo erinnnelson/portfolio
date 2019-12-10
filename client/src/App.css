@@ -31,9 +31,34 @@ textarea {
   width: 300px;
 }
 
-.project-image-drops {
-  width: 500px;
+.close-modal-buttons{
+  width: 25px;
+  cursor: pointer;
+}
+
+.form-containers {
+  width: 90%;
   margin: 0 auto;
+  text-align: left;
+  overflow: scroll;
+}
+
+.form-containers::-webkit-scrollbar {
+  display: none;
+}
+
+.form-titles {
+  margin-top: 0;
+  text-decoration: underline;
+}
+
+.category-containers {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.project-image-drops {
+
 }
 
 .skill-images {

@@ -7,7 +7,8 @@ import { DropzoneArea } from 'material-ui-dropzone'
 export default (props) => {
 
   return (
-    <div>
+    <div className='form-containers'>
+      <h1 className='form-titles'>New Project</h1>
       <input
         name='title'
         type='text'
@@ -26,18 +27,18 @@ export default (props) => {
         onChange={props.handleChange}
       /><br />
       <label htmlFor="">Categories</label><br />
-      {props.projectFormData.categories && props.projectFormData.categories.map((category, i) => (
-        <div key={category.id}>
-          <label>{category.name}</label>
-          <input
-            name={category.name}
-            type='checkbox'
-            onChange={(e) => { props.handleModelsCheckboxChange(e, i, 'categories') }}
-          />
-          <button>edit</button>
-          <button>delete</button>
-        </div>
-      ))}
+      <div className='category-containers'>
+        {props.projectFormData.categories && props.projectFormData.categories.map((category, i) => (
+          <div key={category.id}>
+            <input
+              name={category.name}
+              type='checkbox'
+              onChange={(e) => { props.handleModelsCheckboxChange(e, i, 'categories') }}
+            />
+            <label>{category.name}</label>
+          </div>
+        ))}
+      </div>
       <br />
       {/* <CategoryForm
         handleChange={props.handleCategoryFormDataChange}
@@ -92,7 +93,7 @@ export default (props) => {
           dropzoneText={''}
         />
       </div>
-      <label htmlFor="">Skills</label><br />
+      <label>Skills</label><br />
       {props.projectFormData.skills && props.projectFormData.skills.map((skill, i) => (
         <div key={skill.id}>
           <input
@@ -102,8 +103,6 @@ export default (props) => {
           />
           <img className='skill-images' src={skill.image} title={skill.name} alt={skill.name} />
           <label>{skill.name}</label>
-          <button>edit</button>
-          <button>delete</button>
         </div>
       ))}
       <br />

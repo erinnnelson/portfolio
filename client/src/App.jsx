@@ -3,11 +3,14 @@ import Axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Main from './components/Main'
+import ProjectForm from './components/ProjectForm';
 import { loginUser, registerUser, getProjects, destroyProject, updateProject, createProject, getCategories, createCategory, getSkills, createSkill } from './services/api-helper'
 import Login from './components/Login'
 import decode from 'jwt-decode';
 import './App.css';
-// import Register from './components/Register'
+import Modal from 'react-modal-slider';
+import 'react-modal-slider/lib/main.css';
+import Register from './components/Register'
 
 function App(props) {
 
@@ -30,10 +33,19 @@ function App(props) {
     }
   }
 
+  const resetAuthFormData = () => {
+    setAuthFormData({
+      username: '',
+      email: '',
+      password: ''
+    })
+  }
+
   const handleLogin = async () => {
     const userData = await loginUser(authFormData);
     setCurrentUser(decode(userData.token));
     localStorage.setItem("jwt", userData.token)
+    resetAuthFormData();
   }
 
   const handleRegister = async (e) => {
@@ -89,6 +101,7 @@ function App(props) {
 
   const callProjects = async () => {
     let res = await getProjects();
+    console.log(res)
     setProjects(res);
   }
 
@@ -258,6 +271,7 @@ function App(props) {
         checked: false
       }))
     }))
+    console.log(res)
   }
 
   const handleSkillFormDataChange = (e) => {
@@ -301,6 +315,17 @@ function App(props) {
     }))
   }
 
+  const [newProjectFormToggle, setNewProjectFormToggle] = useState(true)
+
+  const toggleVisibleModal = () => {
+    setNewProjectFormToggle(prev => (!prev))
+  };
+
+  const closeVisibleModal = () => {
+    setNewProjectFormToggle(false)
+  }
+
+
   useEffect(() => {
     checkUser();
     callProjects();
@@ -315,45 +340,77 @@ function App(props) {
   // }
 
   return (
-    <div className="App">
+    <div className='App'>
       {/* <Register
           handleRegister={handleRegister}
           handleChange={authHandleChange}
           formData={authFormData} /> */}
 
-      <Route exact path="/" render={() => (
+      <div id={'form-modal'}>
+        <Modal
+          // default false
+          isOpen={newProjectFormToggle}
+          // default 60%
+          width={'500px'}
+          // default from right
+          directionFrom={'right'}
+          // default Modal
+          contentLabel={'project-form'}
+          onRequestClose={toggleVisibleModal}
+          // optional for accessibility
+          setAppElement={'#root'}
+          // default false allows you to skip setAppElement prop for react-modal
+          ariaHideApp={true}
+          // allow you to set the maximum width of the viewport
+          // at which the modal will be expanded to full screen
+          maxMediaWidth={500}
+          // allows you to decorate a className or overlayClassName
+          className={'project-form-modal'}
+          overlayClassName={'project-form-modal-overlay'}
+        >
+          <button className='close-modal-buttons' onClick={toggleVisibleModal}>X</button>
+          {currentUser &&
+            <ProjectForm
+              handleChange={handleProjectFormDataChange}
+              handleCheckboxChange={handleProjectFormDataCheckboxChange}
+              handleDropFileChange={handleProjectFormDataDropFileChange}
+              handleSkillFormDataDropFileChange={handleSkillFormDataDropFileChange}
+              projectFormData={projectFormData}
+              handleSubmit={handleProjectSubmit}
+              // categories={props.categories}
+              handleCategoryFormDataChange={handleCategoryFormDataChange}
+              handleModelsCheckboxChange={handleProjectFormDataModelsCheckboxChange}
+              categoryFormData={categoryFormData}
+              handleCategorySubmit={handleCategorySubmit}
+              // skills={props.skills}
+              handleSkillFormDataChange={handleSkillFormDataChange}
+              skillFormData={skillFormData}
+              handleSkillSubmit={handleSkillSubmit}
+            />
+          }
+        </Modal>
+
+      </div>
+
+      <Route exact path='/' render={() => (
         <Main
           currentUser={currentUser}
           handleLogout={handleLogout}
           projects={projects}
           handleProjectDelete={handleProjectDelete}
-          handleProjectFormDataChange={handleProjectFormDataChange}
-          handleProjectFormDataCheckboxChange={handleProjectFormDataCheckboxChange}
-          handleProjectFormDataDropFileChange={handleProjectFormDataDropFileChange}
-          handleSkillFormDataDropFileChange={handleSkillFormDataDropFileChange}
-          projectFormData={projectFormData}
-          handleProjectSubmit={handleProjectSubmit}
-          handleProjectFormDataModelsCheckboxChange={handleProjectFormDataModelsCheckboxChange}
-          handleCategoryFormDataChange={handleCategoryFormDataChange}
-          // categories={categories}
-          categoryFormData={categoryFormData}
-          handleCategorySubmit={handleCategorySubmit}
-          handleSkillFormDataChange={handleSkillFormDataChange}
-          // skills={skills}
-          skillFormData={skillFormData}
-          handleSkillSubmit={handleSkillSubmit}
           handleProjectUpdate={handleProjectUpdate}
+          toggleVisibleModal={toggleVisibleModal}
         />
       )} />
 
-      <Route exact path="/admin" render={() => (
+      <Route exact path='/admin' render={() => (
         <Login
           handleLogin={handleLogin}
           handleChange={authHandleChange}
           formData={authFormData}
+          currentUser={currentUser}
         />
       )} />
-
     </div>
   );
 }
