@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   # before_action :authorize_request, except: %i[index show]
+  include Rails.application.routes.url_helpers
 
   # GET /projects
   def index
@@ -9,11 +10,12 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:id]) 
     @skills = Skill.all.with_attached_image
-
-      skills_with_images = @skills.map do |skill|
-      skill.as_json.merge({ image: url_for(skill.image) })
+    skills_with_images = @skills.map do |skill|
+      new_skill = skill.attributes.symbolize_keys
+      new_skill[:image] = rails_blob_path(skill.image, only_path: true)
+      new_skill
     end
 
     # skills_with_images = @project.skills.map do |skill_sans_image| 
@@ -21,7 +23,8 @@ class ProjectsController < ApplicationController
     #   {skill: skill}
     # end
 
-    render json: @project, include: [:categories, skills_with_images]
+    # render json: @project
+    render json: { project: @project, categories: @project.categories, skills: skills_with_images }
   end
 
   # POST /projects
