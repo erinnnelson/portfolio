@@ -2,6 +2,11 @@ import React from 'react';
 
 export default (props) => {
 
+  const attachBaseToUrl = (imageUrl) => {
+    return `http://localhost:3000/${imageUrl}`
+  }
+    
+
   return (
     <div className='project-cards'>
       <p>{props.project.title}</p>
@@ -10,10 +15,10 @@ export default (props) => {
       {props.project.categories.map(category => (
         <p key={category.id}>{category.name}</p>
       ))}
-      <img className='project-images' src={props.project.image} alt={props.project.image} />
+      <img className='project-images' src={attachBaseToUrl(props.project.image)} alt={props.project.image} />
       <br />
       {props.project.skills.map(skill => (
-        <img key={skill.id} className='skill-images' src={skill.image} title={skill.name} alt={skill.name} />
+        <img key={skill.id} className='skill-images' src={attachBaseToUrl(skill.image)} title={skill.name} alt={skill.name} />
         // <p>{skill.name}</p>
       ))}
       <br />
