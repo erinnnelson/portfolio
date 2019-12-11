@@ -8,13 +8,10 @@ export default (props) => {
     
 
   return (
-    <div className='project-cards'>
+    <div className={props.project.live ? 'project-cards projects-live' : 'project-cards projects-not-live'}>
       <p>{props.project.title}</p>
       <p>{props.project.deployed}</p>
       <p>{props.project.description}</p>
-      {props.project.categories.map(category => (
-        <p key={category.id}>{category.name}</p>
-      ))}
       <img className='project-images' src={attachBaseToUrl(props.project.image)} alt={props.project.image} />
       <br />
       {props.project.skills.map(skill => (

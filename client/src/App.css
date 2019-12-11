@@ -17,9 +17,18 @@ textarea {
   resize: none;
 }
 
+#projects-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 .project-containers {
   width: 400px;
   margin: 0 auto 30px auto;
+}
+
+.projects-not-live {
+  background-color: #565656b0
 }
 
 .project-cards {

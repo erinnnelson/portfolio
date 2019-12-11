@@ -9,15 +9,33 @@ export default (props) => {
 
     <div>
       <p>Current Projects:</p>
-      {props.projects.map(project => (
-        <div key={project.id} className='project-containers'>
-          <ProjectCard
-            project={project}
-          />
-          <button onClick={(e) => props.handleProjectUpdate(e, project.id)}>update</button>
-          <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
-        </div>
-      ))}
+      <div id='projects-container'>
+        {props.projects.map(project => {
+          if (props.currentUser) {
+            return (
+              <div key={project.id} className='project-containers' >
+                <ProjectCard
+                  project={project}
+                />
+                <button onClick={(e) => props.handleProjectUpdate(e, project.id)}>update</button>
+                <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
+              </div>
+            )
+          } else {
+            if (project.live) {
+              return (
+                <div key={project.id} className='project-containers'>
+                  <ProjectCard
+                    project={project}
+                  />
+                  <button onClick={(e) => props.handleProjectUpdate(e, project.id)}>update</button>
+                  <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
+                </div>
+              )
+            }
+          }
+        })}
+      </div>
 
       {props.currentUser && <button onClick={props.toggleVisibleModal}>Add A Project</button>}
       <div>

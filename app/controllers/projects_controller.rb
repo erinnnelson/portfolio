@@ -41,25 +41,8 @@ class ProjectsController < ApplicationController
     project_with_image[:categories] = @project.categories
     project_with_image[:skills] = skills_with_images
     
-    # logger.debug project_with_image[:id]
     render json: project_with_image
-
-    # render json: { project: project_with_image, categories: @project.categories, skills: skills_with_images }
-    
-    # render json: { project: {
-    #   id: project_with_image[:id], 
-    #   title: project_with_image[:title],
-    #   description: project_with_image[:description],
-    #   live: project_with_image[:live],
-    #   github: project_with_image[:github],
-    #   url: project_with_image[:url],
-    #   deployed: project_with_image[:deployed],
-    #   created_at: project_with_image[:created_at],
-    #   updated_at: project_with_image[:updated_at],
-    #   image: project_with_image[:image],
-    #   categories: @project.categories,
-    #   skills: skills_with_images
-    # } }
+    # logger.debug project_with_image[:id]
   end
 
   # POST /projects
@@ -78,7 +61,23 @@ class ProjectsController < ApplicationController
         skill = Skill.where(id: n.to_i)
         @project.skills << skill
       end
-      render json: @project, include: [:categories, :skills], status: :created, location: @project
+
+      project_with_image = @project.attributes.symbolize_keys
+      project_with_image[:image] = rails_blob_path(@project.image, only_path: true)
+  
+  
+      skills = @project.skills
+      # .with_attached_image
+      skills_with_images = skills.map do |skill|
+        new_skill = skill.attributes.symbolize_keys
+        new_skill[:image] = rails_blob_path(skill.image, only_path: true)
+        new_skill
+      end
+  
+      project_with_image[:categories] = @project.categories
+      project_with_image[:skills] = skills_with_images
+
+      render json: project_with_image
     else
       render json: @project.errors, status: :unprocessable_entity
     end
@@ -100,7 +99,23 @@ class ProjectsController < ApplicationController
         skill = Skill.where(id: n.to_i)
         @project.skills << skill
       end
-      render json: @project, include: [:categories, :skills]
+      
+      project_with_image = @project.attributes.symbolize_keys
+      project_with_image[:image] = rails_blob_path(@project.image, only_path: true)
+  
+  
+      skills = @project.skills
+      # .with_attached_image
+      skills_with_images = skills.map do |skill|
+        new_skill = skill.attributes.symbolize_keys
+        new_skill[:image] = rails_blob_path(skill.image, only_path: true)
+        new_skill
+      end
+  
+      project_with_image[:categories] = @project.categories
+      project_with_image[:skills] = skills_with_images
+
+      render json: project_with_image
     else
       render json: @project.errors, status: :unprocessable_entity
     end
