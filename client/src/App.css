@@ -61,13 +61,56 @@ textarea {
   text-decoration: underline;
 }
 
-.category-containers {
+.project-form-titles {
+  width: 98%;
+  margin-bottom: 5px;
+  font-size: 24px;
+}
+
+.project-form-descriptions {
+  width: 98%;
+  font-size: 16px;
+}
+
+.project-image-drops {
+  color: grey;
+  margin-bottom: 5px;
+}
+
+.project-form-links-containers, .project-form-deployment-info-containers {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+
+}
+
+.project-form-links {
+  font-size: 16px;
+  width: 48%;
+}
+
+.project-form-deployment-date {
+  font-size: 14px;
+  width: 48%;
+}
+
+.project-form-deployment-live {
+  font-size: 18px;
+  width: 48%;
+}
+
+.project-form-category-containers, .project-form-skill-containers {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.project-image-drops {
-
+.project-form-submit-buttons-containers {
+  margin-top: 30px;
+  width: center;
+  text-align: center;
+}
+.project-form-submit-buttons {
+  font-size: 24px;
 }
 
 .skill-images {

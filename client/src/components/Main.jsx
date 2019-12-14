@@ -17,7 +17,7 @@ export default (props) => {
                 <ProjectCard
                   project={project}
                 />
-                <button onClick={(e) => props.handleProjectUpdate(e, project.id)}>update</button>
+                <button onClick={() => props.openModal(true, project)}>update</button>
                 <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
               </div>
             )
@@ -28,7 +28,7 @@ export default (props) => {
                   <ProjectCard
                     project={project}
                   />
-                  <button onClick={(e) => props.handleProjectUpdate(e, project.id)}>update</button>
+                  <button onClick={() => props.openModal(true, project)}>edit</button>
                   <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
                 </div>
               )
@@ -37,7 +37,7 @@ export default (props) => {
         })}
       </div>
 
-      {props.currentUser && <button onClick={props.toggleVisibleModal}>Add A Project</button>}
+      {props.currentUser && <button onClick={() => props.openModal(false)}>Add A Project</button>}
       <div>
         {props.currentUser
           ?

@@ -1,9 +1,10 @@
 import React from 'react';
+import { baseUrl } from '../services/api-helper';
 
 export default (props) => {
 
   const attachBaseToUrl = (imageUrl) => {
-    return `http://localhost:3000/${imageUrl}`
+    return `${baseUrl}/${imageUrl}`
   }
     
 
@@ -21,7 +22,7 @@ export default (props) => {
       <br />
       <a href={props.project.github}>github</a>
       <br />
-      <a href={props.project.url}>site</a>
+      {props.project.live && <a href={props.project.url}>site</a>}
     </div>
   )
 }
