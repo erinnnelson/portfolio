@@ -47,6 +47,7 @@ function App(props) {
   })
 
   const [projectEditFormData, setProjectEditFormData] = useState({
+    id: null,
     title: '',
     description: '',
     live: false,
@@ -55,9 +56,17 @@ function App(props) {
     deployed: getDateToday(),
     display_image: null,
     image: null,
+    updateImage: false,
     categories: [],
     skills: []
   })
+
+  const setProjectEditFormDataUpdateImage = (state) => {
+    setProjectEditFormData(prev => ({
+      ...prev,
+      updateImage: state
+    }))
+  }
 
   const updateProjectEditFormData = (project) => {
     setProjectEditFormData(prev => ({
@@ -70,6 +79,7 @@ function App(props) {
       deployed: project.deployed,
       display_image: project.image,
       image: null,
+      updateImage: false,
       categories: prev.categories.map(category => {
         let boxChecked = false;
         project.categories.forEach(attachedCategory => {
@@ -161,7 +171,7 @@ function App(props) {
     }));
   };
 
-  const compileProject = (selectedProjectFormState) => {
+  const compileProject = (selectedProjectFormState, compileImage) => {
     let data = new FormData();
     let categoryIdsString = ''
     selectedProjectFormState.categories.forEach(category => {
@@ -183,16 +193,17 @@ function App(props) {
     data.append('github', selectedProjectFormState.github);
     data.append('url', selectedProjectFormState.url);
     data.append('deployed', selectedProjectFormState.deployed);
-    data.append('image', selectedProjectFormState.image);
+    compileImage && data.append('image', selectedProjectFormState.image);
     data.append('category_ids', categoryIdsString)
     data.append('skill_ids', skillIdsString)
     return data;
   }
 
-  const handleProjectSubmit = async (e) => {
+  const handleProjectCreate = async (e) => {
     e.preventDefault();
+    setNewProjectFormToggle(false);
     // console.log(projectCreateFormData)
-    const projectData = compileProject(projectCreateFormData);
+    const projectData = compileProject(projectCreateFormData, true);
     // for (var pair of projectData.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
@@ -209,10 +220,11 @@ function App(props) {
     ))
   }
 
-  const handleProjectUpdate = async (e, id) => {
+  const handleProjectUpdate = async (e, id, updateImage) => {
     e.preventDefault();
+    setNewProjectFormToggle(false);
     // console.log(projectEditFormData)
-    const projectData = compileProject(projectEditFormData);
+    const projectData = compileProject(projectEditFormData, updateImage);
     let res = await updateProject(id, projectData);
     setProjects(prev => prev.map(project => {
       if (project.id === res.id) {
@@ -478,7 +490,8 @@ function App(props) {
               setProjectCreateFormData={setProjectCreateFormData}
               projectEditFormData={projectEditFormData}
               setProjectEditFormData={setProjectEditFormData}
-              handleProjectSubmit={handleProjectSubmit}
+              handleProjectCreate={handleProjectCreate}
+              handleProjectUpdate={handleProjectUpdate}
               handleCategoryFormDataChange={handleCategoryFormDataChange}
               handleProjectFormDataModelsCheckboxChange={handleProjectFormDataModelsCheckboxChange}
               categoryFormData={categoryFormData}
@@ -487,6 +500,7 @@ function App(props) {
               skillFormData={skillFormData}
               handleSkillSubmit={handleSkillSubmit}
               openModal={openModal}
+              setProjectEditFormDataUpdateImage={setProjectEditFormDataUpdateImage}
             />
           </Modal>
         </div>
@@ -498,7 +512,6 @@ function App(props) {
           handleLogout={handleLogout}
           projects={projects}
           handleProjectDelete={handleProjectDelete}
-          handleProjectUpdate={handleProjectUpdate}
           openModal={openModal}
         />
       )} />

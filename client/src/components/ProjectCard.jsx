@@ -13,7 +13,7 @@ export default (props) => {
       <p>{props.project.title}</p>
       <p>{props.project.deployed}</p>
       <p>{props.project.description}</p>
-      <img className='project-images' src={attachBaseToUrl(props.project.image)} alt={props.project.image} />
+      <img className='project-images' src={attachBaseToUrl(props.project.image)} alt={props.project.title} />
       <br />
       {props.project.skills.map(skill => (
         <img key={skill.id} className='skill-images' src={attachBaseToUrl(skill.image)} title={skill.name} alt={skill.name} />

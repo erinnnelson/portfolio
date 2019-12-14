@@ -29,7 +29,7 @@ export default (props) => {
       /><br />
       <div className='project-image-drops'>
         <DropzoneArea
-          onChange={props.handleDropFileChange}
+          onChange={(files) => props.handleDropFileChange(files, props.setProjectFormData)}
           maxFileSize={30000000}
           filesLimit={1}
           acceptedFiles={['image/*']}
@@ -127,7 +127,7 @@ export default (props) => {
         handleSubmit={props.handleSkillSubmit}
       /> */}
       <div className='project-form-submit-buttons-containers'>
-        <button className='project-form-submit-buttons' onClick={props.handleSubmit}>SUBMIT</button>
+        <button className='project-form-submit-buttons' onClick={(e) => props.handleSubmit(e)}>SUBMIT</button>
       </div>
     </div>
   )

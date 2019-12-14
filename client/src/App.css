@@ -72,9 +72,21 @@ textarea {
   font-size: 16px;
 }
 
+.project-edit-current-images {
+  width: 252px;
+  cursor: pointer;
+}
+
 .project-image-drops {
+  position: relative;
   color: grey;
   margin-bottom: 5px;
+}
+
+.close-image-drop-buttons {
+  position: absolute;
+  z-index: 1;
+
 }
 
 .project-form-links-containers, .project-form-deployment-info-containers {

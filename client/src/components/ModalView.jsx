@@ -17,7 +17,7 @@ export default (props) => {
               handleSkillFormDataDropFileChange={props.handleSkillFormDataDropFileChange}
               projectFormData={props.projectEditFormData}
               setProjectFormData={props.setProjectEditFormData}
-              handleSubmit={props.handleProjectSubmit}
+              handleSubmit={props.handleProjectUpdate}
               handleCategoryFormDataChange={props.handleCategoryFormDataChange}
               handleModelsCheckboxChange={props.handleProjectFormDataModelsCheckboxChange}
               categoryFormData={props.categoryFormData}
@@ -25,6 +25,7 @@ export default (props) => {
               handleSkillFormDataChange={props.handleSkillFormDataChange}
               skillFormData={props.skillFormData}
               handleSkillSubmit={props.handleSkillSubmit}
+              setUpdateImage={props.setProjectEditFormDataUpdateImage}
             />
             :
             <ProjectCreateForm
@@ -34,7 +35,7 @@ export default (props) => {
               handleSkillFormDataDropFileChange={props.handleSkillFormDataDropFileChange}
               projectFormData={props.projectCreateFormData}
               setProjectFormData={props.setProjectCreateFormData}
-              handleSubmit={props.handleProjectSubmit}
+              handleSubmit={props.handleProjectCreate}
               handleCategoryFormDataChange={props.handleCategoryFormDataChange}
               handleModelsCheckboxChange={props.handleProjectFormDataModelsCheckboxChange}
               categoryFormData={props.categoryFormData}
