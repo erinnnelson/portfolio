@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import ProjectCreateForm from './ProjectCreateForm';
 import ProjectEditForm from './ProjectEditForm';
+import CategoryForm from './CategoryForm'
+import SkillForm from './SkillForm'
 
 export default (props) => {
 
@@ -23,17 +24,10 @@ export default (props) => {
               handleChange={props.handleProjectFormDataChange}
               handleCheckboxChange={props.handleProjectFormDataCheckboxChange}
               handleDropFileChange={props.handleProjectFormDataDropFileChange}
-              handleSkillFormDataDropFileChange={props.handleSkillFormDataDropFileChange}
               projectFormData={props.projectEditFormData}
               setProjectFormData={props.setProjectEditFormData}
               handleSubmit={props.handleProjectUpdate}
-              handleCategoryFormDataChange={props.handleCategoryFormDataChange}
               handleModelsCheckboxChange={props.handleProjectFormDataModelsCheckboxChange}
-              categoryFormData={props.categoryFormData}
-              handleCategorySubmit={props.handleCategorySubmit}
-              handleSkillFormDataChange={props.handleSkillFormDataChange}
-              skillFormData={props.skillFormData}
-              handleSkillSubmit={props.handleSkillSubmit}
               setUpdateImage={props.setProjectEditFormDataUpdateImage}
               seeAdditionalModelEditView={seeAdditionalModelEditView}
             />
@@ -42,17 +36,10 @@ export default (props) => {
               handleChange={props.handleProjectFormDataChange}
               handleCheckboxChange={props.handleProjectFormDataCheckboxChange}
               handleDropFileChange={props.handleProjectFormDataDropFileChange}
-              handleSkillFormDataDropFileChange={props.handleSkillFormDataDropFileChange}
               projectFormData={props.projectCreateFormData}
               setProjectFormData={props.setProjectCreateFormData}
               handleSubmit={props.handleProjectCreate}
-              handleCategoryFormDataChange={props.handleCategoryFormDataChange}
               handleModelsCheckboxChange={props.handleProjectFormDataModelsCheckboxChange}
-              categoryFormData={props.categoryFormData}
-              handleCategorySubmit={props.handleCategorySubmit}
-              handleSkillFormDataChange={props.handleSkillFormDataChange}
-              skillFormData={props.skillFormData}
-              handleSkillSubmit={props.handleSkillSubmit}
               seeAdditionalModelEditView={seeAdditionalModelEditView}
             />
           }
@@ -61,20 +48,26 @@ export default (props) => {
         <div className='additional-models-forms-containers'>
           {additionalModelViewIsSkills
             ?
-            < div >
-              skills
-
+            <div>
+              <SkillForm
+                handleChange={props.handleSkillFormDataChange}
+                handleDropFileChange={props.handleSkillFormDataDropFileChange}
+                skillFormData={props.skillFormData}
+                handleSubmit={props.handleSkillSubmit}
+              />
             </div>
             :
             <div>
-              categories
-
+              <CategoryForm
+                handleChange={props.handleCategoryFormDataChange}
+                categoryFormData={props.categoryFormData}
+                handleSubmit={props.handleCategorySubmit}
+              />
             </div>
           }
+          <button onClick={() => props.setModalViewIsProjectForm(true)}>{"<- back"}</button>
         </div>
       }
-      <button onClick={() => props.setModalViewIsProjectForm(prev => (!prev))}>switch</button>
     </div>
-
   )
 }

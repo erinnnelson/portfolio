@@ -55,7 +55,18 @@ function App(props) {
       github: '',
       url: '',
       deployed: getDateToday(),
-      image: null
+      image: null,
+      categories: prev.categories.map(category => ({
+        name: category.name,
+        id: category.id,
+        checked: false
+      })),
+      skills: prev.skills.map(skill => ({
+        name: skill.name,
+        image: skill.image,
+        id: skill.id,
+        checked: false
+      }))
     }))
   }
 
@@ -115,6 +126,7 @@ function App(props) {
         })
         return {
           name: skill.name,
+          image: skill.image,
           id: skill.id,
           checked: boxChecked
         }
@@ -217,6 +229,7 @@ function App(props) {
 
   const handleProjectCreate = async (e) => {
     e.preventDefault();
+    setNewProjectFormToggle(false);
     // console.log(projectCreateFormData)
     const projectData = compileProject(projectCreateFormData, true);
     // for (var pair of projectData.entries()) {
@@ -224,7 +237,6 @@ function App(props) {
     // }
     const res = await createProject(projectData);
     setProjects(prev => ([...prev, res]))
-    setNewProjectFormToggle(false);
     resetProjectCreateFormData();
   }
 
@@ -239,6 +251,7 @@ function App(props) {
 
   const handleProjectUpdate = async (e, id, updateImage) => {
     e.preventDefault();
+    setNewProjectFormToggle(false);
     // console.log(projectEditFormData)
     const projectData = compileProject(projectEditFormData, updateImage);
     let res = await updateProject(id, projectData);
@@ -249,7 +262,6 @@ function App(props) {
         return project
       }
     }))
-    setNewProjectFormToggle(false);
   }
 
   // CATEGORIES

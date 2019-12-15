@@ -20,9 +20,9 @@ export default (props) => {
         // <p>{skill.name}</p>
       ))}
       <br />
-      <a href={props.project.github}>github</a>
+      <a href={props.project.github} target="_blank">github</a>
       <br />
-      {props.project.live && <a href={props.project.url}>site</a>}
+      {props.project.live && <a href={props.project.url} target="_blank">site</a>}
     </div>
   )
 }

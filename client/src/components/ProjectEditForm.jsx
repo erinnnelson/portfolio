@@ -106,11 +106,6 @@ export default (props) => {
         ))}
       </div>
       <br />
-      {/* <CategoryForm
-        handleChange={props.handleCategoryFormDataChange}
-        categoryFormData={props.categoryFormData}
-        handleSubmit={props.handleCategorySubmit}
-      /> */}
       {/* <input
           type='file'
           name='image'
@@ -133,12 +128,6 @@ export default (props) => {
         ))}
       </div>
       <br />
-      {/* <SkillForm
-        handleChange={props.handleSkillFormDataChange}
-        handleDropFileChange={props.handleSkillFormDataDropFileChange}
-        skillFormData={props.skillFormData}
-        handleSubmit={props.handleSkillSubmit}
-      /> */}
       <div className='project-form-submit-buttons-containers'>
         <button className='project-form-submit-buttons' onClick={(e) => props.handleSubmit(e, props.projectFormData.id, props.projectFormData.updateImage)}>UPDATE</button>
       </div>
