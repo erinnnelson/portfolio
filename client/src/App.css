@@ -73,14 +73,18 @@ textarea {
 }
 
 .project-edit-current-images {
-  width: 252px;
+  width: 267px;
   cursor: pointer;
+}
+
+.project-edit-current-images:hover {
+  opacity: .5;
 }
 
 .project-image-drops {
   position: relative;
   color: grey;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 .close-image-drop-buttons {

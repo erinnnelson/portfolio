@@ -46,6 +46,19 @@ function App(props) {
     skills: []
   })
 
+  const resetProjectCreateFormData = () => {
+    setProjectCreateFormData(prev => ({
+      ...prev,
+      title: '',
+      description: '',
+      live: false,
+      github: '',
+      url: '',
+      deployed: getDateToday(),
+      image: null
+    }))
+  }
+
   const [projectEditFormData, setProjectEditFormData] = useState({
     id: null,
     title: '',
@@ -113,11 +126,14 @@ function App(props) {
 
   const [newProjectFormToggle, setNewProjectFormToggle] = useState(false)
 
+  const [modalViewIsProjectForm, setModalViewIsProjectForm] = useState(true)
+
   const toggleVisibleModal = () => {
     setNewProjectFormToggle(prev => (!prev))
   };
 
   const openModal = (isEdit, project) => {
+    setModalViewIsProjectForm(true)
     setProjectIsEdit(isEdit)
     setNewProjectFormToggle(true)
     if (isEdit) {
@@ -201,7 +217,6 @@ function App(props) {
 
   const handleProjectCreate = async (e) => {
     e.preventDefault();
-    setNewProjectFormToggle(false);
     // console.log(projectCreateFormData)
     const projectData = compileProject(projectCreateFormData, true);
     // for (var pair of projectData.entries()) {
@@ -209,6 +224,8 @@ function App(props) {
     // }
     const res = await createProject(projectData);
     setProjects(prev => ([...prev, res]))
+    setNewProjectFormToggle(false);
+    resetProjectCreateFormData();
   }
 
   const handleProjectDelete = async (id) => {
@@ -222,7 +239,6 @@ function App(props) {
 
   const handleProjectUpdate = async (e, id, updateImage) => {
     e.preventDefault();
-    setNewProjectFormToggle(false);
     // console.log(projectEditFormData)
     const projectData = compileProject(projectEditFormData, updateImage);
     let res = await updateProject(id, projectData);
@@ -233,6 +249,7 @@ function App(props) {
         return project
       }
     }))
+    setNewProjectFormToggle(false);
   }
 
   // CATEGORIES
@@ -458,23 +475,14 @@ function App(props) {
 
         <div id={'form-modal'}>
           <Modal
-            // default false
             isOpen={newProjectFormToggle}
-            // default 60%
             width={'500px'}
-            // default from right
             directionFrom={'right'}
-            // default Modal
             contentLabel={'project-form'}
             onRequestClose={toggleVisibleModal}
-            // optional for accessibility
             setAppElement={'#root'}
-            // default false allows you to skip setAppElement prop for react-modal
             ariaHideApp={true}
-            // allow you to set the maximum width of the viewport
-            // at which the modal will be expanded to full screen
             maxMediaWidth={500}
-            // allows you to decorate a className or overlayClassName
             className={'project-form-modal'}
             overlayClassName={'project-form-modal-overlay'}
           >
@@ -501,6 +509,8 @@ function App(props) {
               handleSkillSubmit={handleSkillSubmit}
               openModal={openModal}
               setProjectEditFormDataUpdateImage={setProjectEditFormDataUpdateImage}
+              modalViewIsProjectForm={modalViewIsProjectForm}
+              setModalViewIsProjectForm={setModalViewIsProjectForm}
             />
           </Modal>
         </div>

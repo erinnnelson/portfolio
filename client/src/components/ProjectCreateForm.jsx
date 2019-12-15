@@ -77,7 +77,7 @@ export default (props) => {
         </div>
       </div>
       <br />
-      <label>Tools Used</label>
+      <button onClick={() => props.seeAdditionalModelEditView(true)}>Skills</button>
       <div className='project-form-skill-containers'>
         {props.projectFormData.skills && props.projectFormData.skills.map((skill, i) => (
           <div key={skill.id}>
@@ -105,7 +105,7 @@ export default (props) => {
           files={projectFormData.image}
           onChange={handleBasicFileChange}
         /><br /> */}
-      <label htmlFor="">Tags</label>
+      <button onClick={() => props.seeAdditionalModelEditView(false)}>Categories</button>
       <div className='project-form-category-containers'>
         {props.projectFormData.categories && props.projectFormData.categories.map((category, i) => (
           <div key={category.id}>
