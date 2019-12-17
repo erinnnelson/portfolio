@@ -22,22 +22,42 @@ textarea {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.project-containers {
+.project-card-containers {
   width: 400px;
   margin: 0 auto 30px auto;
+  
 }
+
+
 
 .projects-not-live {
   background-color: #565656b0
 }
 
 .project-cards {
-  border: 1px solid black;
+  border: 1px solid grey;
+  width: 300px;
+  margin: 0 auto;
+  background-color: #d1f5fab0
 
 }
 
+.project-titles {
+  font-size: 24px;
+  font-weight: 500;
+}
+
 .project-images {
-  width: 300px;
+  width: 98%;
+  margin: 1%;
+}
+
+.project-images:hover, .github-img-links:hover{
+  opacity: .7;
+}
+
+.github-img-links {
+  width: 30px;
 }
 
 .close-modal-buttons{

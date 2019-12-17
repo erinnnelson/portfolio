@@ -16,9 +16,9 @@ export default (props) => {
               <div key={project.id} className='project-containers' >
                 <ProjectCard
                   project={project}
+                  currentUser={props.currentUser}
+                  openModal={props.openModal}
                 />
-                <button onClick={() => props.openModal(true, project)}>update</button>
-                <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
               </div>
             )
           } else {
@@ -28,8 +28,6 @@ export default (props) => {
                   <ProjectCard
                     project={project}
                   />
-                  <button onClick={() => props.openModal(true, project)}>edit</button>
-                  <button onClick={() => props.handleProjectDelete(project.id)}>delete</button>
                 </div>
               )
             }
