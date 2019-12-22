@@ -41,19 +41,34 @@ textarea {
   background-color: #d1f5fab0
 
 }
-
-.project-titles {
-  font-size: 24px;
-  font-weight: 500;
-}
-
-.project-images {
+.project-image-links {
+  position: relative;
   width: 98%;
   margin: 1%;
 }
 
-.project-images:hover, .github-img-links:hover{
+.project-deployed-dates {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: black;
+  font-weight: 500;
+  background-color: rgb(231, 231, 231);
+  padding: 0 5px 2px 2px;
+  opacity: .9;
+}
+
+.project-images {
+  width: 100%;
+}
+
+.project-image-links:hover, .github-img-links:hover{
   opacity: .7;
+}
+
+.project-titles {
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .github-img-links {
@@ -85,6 +100,13 @@ textarea {
   width: 98%;
   margin-bottom: 5px;
   font-size: 24px;
+}
+
+.title-and-github-divs{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: center;
 }
 
 .project-form-descriptions {

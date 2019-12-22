@@ -5,31 +5,53 @@ import { getProjects, destroyProject } from '../services/api-helper';
 
 export default (props) => {
 
+
+
   return (
 
+
+
     <div>
-      <p>Current Projects:</p>
+      <div>
+        <select value={props.projectFilter} onChange={(e) => props.setProjectFilter(e.target.value)}>
+          <option value="All">All</option>
+          {props.projectCategories.map((category, i) => (
+            <option key={i} value={category}>{category}</option>
+          ))}
+
+        </select>
+      </div>
       <div id='projects-container'>
-        {props.projects.map(project => {
+        {props.projects.sort((a, b) => (
+          a.deployed < b.deployed
+            ?
+            1
+            :
+            -1
+        )).map(project => {
           if (props.currentUser) {
-            return (
-              <div key={project.id} className='project-containers' >
-                <ProjectCard
-                  project={project}
-                  currentUser={props.currentUser}
-                  openModal={props.openModal}
-                />
-              </div>
-            )
-          } else {
-            if (project.live) {
+            if (props.projectFilter === 'All' || project.categories.map(category => (category.name)).includes(props.projectFilter)) {
               return (
-                <div key={project.id} className='project-containers'>
+                <div key={project.id} className='project-containers' >
                   <ProjectCard
                     project={project}
+                    currentUser={props.currentUser}
+                    openModal={props.openModal}
                   />
                 </div>
               )
+            }
+          } else {
+            if (project.live) {
+              if (props.projectFilter === 'All' || project.categories.map(category => (category.name)).includes(props.projectFilter)) {
+                return (
+                  <div key={project.id} className='project-containers'>
+                    <ProjectCard
+                      project={project}
+                    />
+                  </div>
+                )
+              }
             }
           }
         })}

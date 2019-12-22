@@ -20,6 +20,20 @@ function App(props) {
 
   const [projects, setProjects] = useState([])
 
+  const [projectFilter, setProjectFilter] = useState('All')
+
+  const [currentProjectCategories, setCurrentProjectCategories] = useState([])
+
+  const updateCurrentProjectCategories = (currentProjects) => {
+    let everyCategoryListing = []
+    currentProjects.forEach(project => {
+      project.categories.forEach(category => {
+        everyCategoryListing.push(category.name)
+      })
+    })
+    setCurrentProjectCategories([...new Set(everyCategoryListing)])
+  }
+
   const getDateToday = () => {
     const today = new Date;
     let dd = today.getDate();
@@ -157,6 +171,7 @@ function App(props) {
     let res = await getProjects();
     console.log(res)
     setProjects(res);
+    updateCurrentProjectCategories(res)
   }
 
   // POST NEW PROJECT
@@ -265,8 +280,6 @@ function App(props) {
   }
 
   // CATEGORIES
-
-  // const [categories, setCategories] = useState([])
 
   const [categoryFormData, setCategoryFormData] = useState({
     name: ''
@@ -533,6 +546,9 @@ function App(props) {
           currentUser={currentUser}
           handleLogout={handleLogout}
           projects={projects}
+          projectFilter={projectFilter}
+          setProjectFilter={setProjectFilter}
+          projectCategories={currentProjectCategories}
           handleProjectDelete={handleProjectDelete}
           openModal={openModal}
         />
