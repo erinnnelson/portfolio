@@ -14,7 +14,7 @@ export default (props) => {
   }
 
   return (
-    <div>
+    <div id='forms-container'>
       {props.modalViewIsProjectForm
         ?
         <div className='project-forms-containers'>
@@ -30,6 +30,7 @@ export default (props) => {
               handleModelsCheckboxChange={props.handleProjectFormDataModelsCheckboxChange}
               setUpdateImage={props.setProjectEditFormDataUpdateImage}
               seeAdditionalModelEditView={seeAdditionalModelEditView}
+              handleProjectDelete={props.handleProjectDelete}
             />
             :
             <ProjectCreateForm

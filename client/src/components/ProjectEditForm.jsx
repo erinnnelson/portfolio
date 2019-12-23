@@ -11,6 +11,8 @@ export default (props) => {
     return `${baseUrl}/${imageUrl}`
   }
 
+  const [toggleDeleteCheck, setToggleDeleteCheck] = useState(false)
+
   return (
     <div className='form-containers'>
       <h1 className='form-titles'>Edit Project</h1>
@@ -115,7 +117,7 @@ export default (props) => {
         /><br /> */}
       <button onClick={() => props.seeAdditionalModelEditView(false)}>Categories</button>
       <div className='project-form-category-containers'>
-        {props.projectFormData.categories && props.projectFormData.categories.map((category, i) => (
+        {props.projectFormData.categories && props.projectFormData.categories.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : 1).map((category, i) => (
           <div key={category.id}>
             <input
               name={category.name}
@@ -128,9 +130,21 @@ export default (props) => {
         ))}
       </div>
       <br />
-      <div className='project-form-submit-buttons-containers'>
+      <div className='project-form-submit-button-containers'>
         <button className='project-form-submit-buttons' onClick={(e) => props.handleSubmit(e, props.projectFormData.id, props.projectFormData.updateImage)}>UPDATE</button>
       </div>
+      {toggleDeleteCheck
+        ?
+        <div className='project-form-delete-button-containers'>
+          <button className='project-form-submit-buttons' onClick={() => setToggleDeleteCheck(false)}>CANCEL</button>
+          <button className='project-form-delete-buttons' onClick={(e) => props.handleProjectDelete(props.projectFormData.id)}>CONFIRM</button>
+        </div>
+        :
+        <div className='project-form-delete-button-containers'>
+          <button className='project-form-delete-buttons' onClick={() => setToggleDeleteCheck(true)}>DELETE</button>
+        </div>
+}
+
 
       {/* <button onClick={() => console.log(props.projectFormData)}>check form state</button> */}
     </div>

@@ -54,8 +54,9 @@ textarea {
   color: black;
   font-weight: 500;
   background-color: rgb(231, 231, 231);
-  padding: 0 5px 2px 2px;
+  padding: 2px 5px 2px 2px;
   opacity: .9;
+  font-size: 12px;
 }
 
 .project-images {
@@ -80,7 +81,7 @@ textarea {
   cursor: pointer;
 }
 
-.form-containers {
+#forms-container {
   width: 90%;
   margin: 0 auto;
   text-align: left;
@@ -166,13 +167,28 @@ textarea {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.project-form-submit-buttons-containers {
-  margin-top: 30px;
+.project-form-submit-button-containers, .project-form-delete-button-containers {
+  margin: 30px auto;
   width: center;
   text-align: center;
 }
+
 .project-form-submit-buttons {
   font-size: 24px;
+  cursor: pointer;
+  outline: none;
+}
+
+.project-form-delete-buttons {
+  font-size: 24px;
+  color: red;
+  border-color: red;
+  cursor: pointer;
+  outline: none;
+}
+
+.project-form-delete-buttons:hover {
+  background-color: rgb(255, 176, 176);
 }
 
 .skill-images {

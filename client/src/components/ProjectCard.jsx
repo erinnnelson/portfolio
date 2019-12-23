@@ -18,7 +18,7 @@ export default (props) => {
           <div className='project-image-links'>
             <img className='project-images' src={attachBaseToUrl(props.project.image)} title='Live Site' alt={props.project.title} />
             <div className='project-deployed-dates'>
-              <Moment format="MMM YYYY" withTitle>{props.project.deployed}</Moment>
+              <Moment format="MMM YYYY">{props.project.deployed}</Moment>
             </div>
           </div>
         </a>
@@ -37,7 +37,6 @@ export default (props) => {
         <br />
       </div >
       {props.currentUser && <button onClick={() => props.openModal(true, props.project)}>update</button>}
-      {props.currentUser && <button onClick={() => props.handleProjectDelete(props.project.id)}>delete</button>}
     </div>
   )
 }

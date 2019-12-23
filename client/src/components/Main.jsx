@@ -15,7 +15,7 @@ export default (props) => {
       <div>
         <select value={props.projectFilter} onChange={(e) => props.setProjectFilter(e.target.value)}>
           <option value="All">All</option>
-          {props.projectCategories.map((category, i) => (
+          {props.projectCategories.sort().map((category, i) => (
             <option key={i} value={category}>{category}</option>
           ))}
 

@@ -100,7 +100,7 @@ export default (props) => {
         /><br /> */}
       <button onClick={() => props.seeAdditionalModelEditView(false)}>Categories</button>
       <div className='project-form-category-containers'>
-        {props.projectFormData.categories && props.projectFormData.categories.map((category, i) => (
+        {props.projectFormData.categories && props.projectFormData.categories.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : 1).map((category, i) => (
           <div key={category.id}>
             <input
               name={category.name}
@@ -113,7 +113,7 @@ export default (props) => {
         ))}
       </div>
       <br />
-      <div className='project-form-submit-buttons-containers'>
+      <div className='project-form-submit-button-containers'>
         <button className='project-form-submit-buttons' onClick={(e) => props.handleSubmit(e)}>SUBMIT</button>
       </div>
     </div>

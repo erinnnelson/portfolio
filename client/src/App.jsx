@@ -262,6 +262,7 @@ function App(props) {
         project.id !== destroyedProject.id
       ))
     ))
+    setNewProjectFormToggle(false);
   }
 
   const handleProjectUpdate = async (e, id, updateImage) => {
@@ -536,6 +537,7 @@ function App(props) {
               setProjectEditFormDataUpdateImage={setProjectEditFormDataUpdateImage}
               modalViewIsProjectForm={modalViewIsProjectForm}
               setModalViewIsProjectForm={setModalViewIsProjectForm}
+              handleProjectDelete={handleProjectDelete}
             />
           </Modal>
         </div>
@@ -549,7 +551,6 @@ function App(props) {
           projectFilter={projectFilter}
           setProjectFilter={setProjectFilter}
           projectCategories={currentProjectCategories}
-          handleProjectDelete={handleProjectDelete}
           openModal={openModal}
         />
       )} />
