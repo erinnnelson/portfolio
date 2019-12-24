@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ProjectCreateForm from './ProjectCreateForm';
 import ProjectEditForm from './ProjectEditForm';
 import CategoryForm from './CategoryForm'
-import SkillForm from './SkillForm'
+import SkillCreateForm from './SkillCreateForm'
+import SkillEditForm from './SkillEditForm'
 
 export default (props) => {
 
@@ -50,11 +51,20 @@ export default (props) => {
           {additionalModelViewIsSkills
             ?
             <div>
-              <SkillForm
-                handleChange={props.handleSkillFormDataChange}
-                handleDropFileChange={props.handleSkillFormDataDropFileChange}
-                skillFormData={props.skillFormData}
-                handleSubmit={props.handleSkillSubmit}
+              <SkillCreateForm
+                handleChange={props.handleCreateSkillFormDataChange}
+                handleDropFileChange={props.handleCreateSkillFormDataDropFileChange}
+                skillFormData={props.createSkillFormData}
+                handleSubmit={props.handleCreateSkillSubmit}
+              />
+              <SkillEditForm
+                skills={props.projectEditFormData.skills}
+                handleChange={props.handleEditSkillFormDataChange}
+                handleDropFileChange={props.handleEditSkillFormDataDropFileChange}
+                skillFormData={props.editSkillFormData}
+                handleSubmit={props.handleUpdateSkill}
+                updateSkillEditFormData={props.updateSkillEditFormData}
+                setUpdateImage={props.setEditSkillFormDataUpdateImage}
               />
             </div>
             :

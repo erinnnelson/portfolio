@@ -50,6 +50,6 @@ class SkillsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def skill_params
-      params.permit(:name, :image)
+      params.permit(:name, :image, :order)
     end
 end

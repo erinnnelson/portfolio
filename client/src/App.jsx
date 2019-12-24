@@ -4,7 +4,7 @@ import { Route, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Main from './components/Main'
 import ModalView from './components/ModalView'
-import { loginUser, registerUser, getProjects, destroyProject, updateProject, createProject, getCategories, createCategory, getSkills, createSkill } from './services/api-helper'
+import { loginUser, registerUser, getProjects, destroyProject, updateProject, createProject, getCategories, createCategory, updateCategory, deleteCategory, getSkills, createSkill, updateSkill, deleteSkill } from './services/api-helper'
 import Login from './components/Login'
 import decode from 'jwt-decode';
 import './App.css';
@@ -94,7 +94,7 @@ function App(props) {
     deployed: getDateToday(),
     display_image: null,
     image: null,
-    updateImage: false,
+    update_image: false,
     categories: [],
     skills: []
   })
@@ -102,7 +102,7 @@ function App(props) {
   const setProjectEditFormDataUpdateImage = (state) => {
     setProjectEditFormData(prev => ({
       ...prev,
-      updateImage: state
+      update_image: state
     }))
   }
 
@@ -117,7 +117,7 @@ function App(props) {
       deployed: project.deployed,
       display_image: project.image,
       image: null,
-      updateImage: false,
+      update_image: false,
       categories: prev.categories.map(category => {
         let boxChecked = false;
         project.categories.forEach(attachedCategory => {
@@ -341,9 +341,18 @@ function App(props) {
 
   // const [skills, setSkills] = useState([])
 
-  const [skillFormData, setSkillFormData] = useState({
+  const [createSkillFormData, setCreateSkillFormData] = useState({
     name: '',
     image: null,
+  })
+
+  const [editSkillFormData, setEditSkillFormData] = useState({
+    id: null,
+    name: '',
+    image: null,
+    display_image: '',
+    update_image: false,
+    order: null
   })
 
   const callSkills = async () => {
@@ -369,31 +378,48 @@ function App(props) {
     }))
   }
 
-  const handleSkillFormDataChange = (e) => {
+  const handleCreateSkillFormDataChange = (e) => {
     const { name, value } = e.target;
-    setSkillFormData(prev => ({
+    setCreateSkillFormData(prev => ({
       ...prev,
       [name]: value
     }))
   }
 
-  const handleSkillFormDataDropFileChange = (files) => {
-    setSkillFormData(prev => ({
+  const handleCreateSkillFormDataDropFileChange = (files) => {
+    setCreateSkillFormData(prev => ({
       ...prev,
       image: files[0]
     }));
   };
 
-  const compileSkill = () => {
+  const handleEditSkillFormDataDropFileChange = (files) => {
+    setEditSkillFormData(prev => ({
+      ...prev,
+      image: files[0]
+    }));
+  };
+
+  const handleEditSkillFormDataChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value)
+    setEditSkillFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const compileSkill = (selectedSkillFormState, compileImage) => {
     let data = new FormData();
-    data.append('name', skillFormData.name);
-    data.append('image', skillFormData.image);
+    data.append('name', selectedSkillFormState.name);
+    data.append('order', selectedSkillFormState.order);
+    compileImage && data.append('image', createSkillFormData.image);
     return data;
   }
 
-  const handleSkillSubmit = async (e) => {
+  const handleCreateSkillSubmit = async (e, updateImage) => {
     e.preventDefault();
-    const skillData = compileSkill();
+    const skillData = compileSkill(createSkillFormData, updateImage);
     // for (var pair of skillData.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
@@ -418,6 +444,59 @@ function App(props) {
       }]
     }))
   }
+
+  const handleUpdateSkill = async (e, i, updateImage) => {
+    e.preventDefault();
+    const skillData = compileSkill(editSkillFormData, updateImage);
+    // for (var pair of skillData.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
+    const res = await updateSkill(i, skillData);
+    // setSkills(prev => ([...prev, res]))
+    setProjectCreateFormData(prev => ({
+      ...prev,
+      skills: prev.skills.map(skill => (
+        skill.id === res.id
+          ?
+          res
+          :
+          skill
+      ))
+    }))
+    setProjectEditFormData(prev => ({
+      ...prev,
+      skills: prev.skills.map(skill => (
+        skill.id === res.id
+          ?
+          res
+          :
+          skill
+      ))
+    }))
+  }
+
+  const setEditSkillFormDataUpdateImage = (state) => {
+    setEditSkillFormData(prev => ({
+      ...prev,
+      update_image: state
+    }))
+  }
+
+  const updateSkillEditFormData = (skill) => {
+    // console.log(skill.id)
+    setEditSkillFormData({
+      id: skill.id,
+      name: skill.name,
+      image: null,
+      display_image: skill.image,
+      update_image: false,
+      order: skill.order
+    })
+  }
+
+  const [skillIsEdit, setSkillIsEdit] = useState(true)
+
+  // EditProject or ProjectEdit (pick one)
 
   const callAdditionalModels = () => {
     callCategories();
@@ -519,7 +598,6 @@ function App(props) {
               handleProjectFormDataChange={handleProjectFormDataChange}
               handleProjectFormDataCheckboxChange={handleProjectFormDataCheckboxChange}
               handleProjectFormDataDropFileChange={handleProjectFormDataDropFileChange}
-              handleSkillFormDataDropFileChange={handleSkillFormDataDropFileChange}
               projectCreateFormData={projectCreateFormData}
               setProjectCreateFormData={setProjectCreateFormData}
               projectEditFormData={projectEditFormData}
@@ -530,14 +608,21 @@ function App(props) {
               handleProjectFormDataModelsCheckboxChange={handleProjectFormDataModelsCheckboxChange}
               categoryFormData={categoryFormData}
               handleCategorySubmit={handleCategorySubmit}
-              handleSkillFormDataChange={handleSkillFormDataChange}
-              skillFormData={skillFormData}
-              handleSkillSubmit={handleSkillSubmit}
+              handleCreateSkillFormDataChange={handleCreateSkillFormDataChange}
+              createSkillFormData={createSkillFormData}
+              handleCreateSkillSubmit={handleCreateSkillSubmit}
+              handleCreateSkillFormDataDropFileChange={handleCreateSkillFormDataDropFileChange}
+              handleEditSkillFormDataChange={handleEditSkillFormDataChange}
+              editSkillFormData={editSkillFormData}
+              handleUpdateSkill={handleUpdateSkill}
+              handleEditSkillFormDataDropFileChange={handleEditSkillFormDataDropFileChange}
               openModal={openModal}
               setProjectEditFormDataUpdateImage={setProjectEditFormDataUpdateImage}
               modalViewIsProjectForm={modalViewIsProjectForm}
               setModalViewIsProjectForm={setModalViewIsProjectForm}
               handleProjectDelete={handleProjectDelete}
+              updateSkillEditFormData={updateSkillEditFormData}
+              setEditSkillFormDataUpdateImage={setEditSkillFormDataUpdateImage}
             />
           </Modal>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CategoryForm from './CategoryForm'
-import SkillForm from './SkillForm'
+import SkillForm from './SkillCreateForm'
 import { DropzoneArea } from 'material-ui-dropzone'
 import { baseUrl } from '../services/api-helper';
 
@@ -34,7 +34,7 @@ export default (props) => {
         value={props.projectFormData.description}
         onChange={(e) => props.handleChange(e, props.setProjectFormData)}
       /><br />
-      {props.projectFormData.updateImage
+      {props.projectFormData.update_image
         ?
         <div className='project-image-drops'>
           <button className='close-image-drop-buttons' onClick={() => props.setUpdateImage(false)}>X</button>
@@ -131,7 +131,7 @@ export default (props) => {
       </div>
       <br />
       <div className='project-form-submit-button-containers'>
-        <button className='project-form-submit-buttons' onClick={(e) => props.handleSubmit(e, props.projectFormData.id, props.projectFormData.updateImage)}>UPDATE</button>
+        <button className='project-form-submit-buttons' onClick={(e) => props.handleSubmit(e, props.projectFormData.id, props.projectFormData.update_image)}>UPDATE</button>
       </div>
       {toggleDeleteCheck
         ?

@@ -25,7 +25,7 @@ export default (props) => {
         dropzoneText={''}
         />
         </div>
-      <button onClick={props.handleSubmit}>add</button>
+      <button onClick={(e) => props.handleSubmit(e, true)}>add</button>
     </div>
   )
 }
