@@ -30,7 +30,7 @@ export default (props) => {
         </div>
         <p>{props.project.description}</p>
         <br />
-        {props.project.skills.map(skill => (
+        {props.project.skills.sort((a, b) => a.order > b.order ? 1 : -1).map(skill => (
           <img key={skill.id} className='skill-images' src={attachBaseToUrl(skill.image)} title={skill.name} alt={skill.name} />
           // <p>{skill.name}</p>
         ))}
