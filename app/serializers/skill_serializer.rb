@@ -1,5 +1,5 @@
 class SkillSerializer < ActiveModel::Serializer
-  attributes :id, :name, :created_at, :updated_at, :image
+  attributes :id, :name, :created_at, :updated_at, :image, :order
 
   def image
     object.image.service_url if object.image.attached?

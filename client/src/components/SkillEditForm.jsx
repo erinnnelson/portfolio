@@ -12,7 +12,7 @@ export default (props) => {
   return (
     <div>
       <div>
-        {props.skills.map(skill => (
+        {props.skills.sort((a, b) => a.order > b.order ? 1 : -1).map(skill => (
           <div>
             <p onClick={() => props.updateSkillEditFormData(skill)}>{skill.name}</p>
           </div>

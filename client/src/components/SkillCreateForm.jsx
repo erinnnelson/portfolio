@@ -9,9 +9,17 @@ export default (props) => {
       <input
         name='name'
         type='text'
-        placeholder='Add Skill?'
+        placeholder='Name...'
         autoComplete='off'
         value={props.skillFormData.name}
+        onChange={props.handleChange}
+      /> <br />
+      <input
+        name='order'
+        type='text'
+        placeholder='Order...'
+        autoComplete='off'
+        value={props.skillFormData.order}
         onChange={props.handleChange}
       /> <br />
       <div className='project-image-drops'>

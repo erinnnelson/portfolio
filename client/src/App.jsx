@@ -77,6 +77,7 @@ function App(props) {
       })),
       skills: prev.skills.map(skill => ({
         name: skill.name,
+        order: skill.order,
         image: skill.image,
         id: skill.id,
         checked: false
@@ -140,6 +141,7 @@ function App(props) {
         })
         return {
           name: skill.name,
+          order: skill.order,
           image: skill.image,
           id: skill.id,
           checked: boxChecked
@@ -358,10 +360,12 @@ function App(props) {
   const callSkills = async () => {
     let res = await getSkills();
     // setSkills(res);
+    console.log(res)
     setProjectCreateFormData(prev => ({
       ...prev,
       skills: res.map(skill => ({
         name: skill.name,
+        order: skill.order,
         image: skill.image,
         id: skill.id,
         checked: false
@@ -371,6 +375,7 @@ function App(props) {
       ...prev,
       skills: res.map(skill => ({
         name: skill.name,
+        order: skill.order,
         image: skill.image,
         id: skill.id,
         checked: false
@@ -429,6 +434,7 @@ function App(props) {
       ...prev,
       skills: [...prev.skills, {
         name: res.name,
+        order: res.order,
         image: res.image,
         id: res.id,
         checked: false
@@ -438,6 +444,7 @@ function App(props) {
       ...prev,
       skills: [...prev.skills, {
         name: res.name,
+        order: res.order,
         image: res.image,
         id: res.id,
         checked: false

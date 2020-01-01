@@ -94,7 +94,7 @@ export default (props) => {
       <br />
       <button onClick={() => props.seeAdditionalModelEditView(true)}>Skills</button>
       <div className='project-form-skill-containers'>
-        {props.projectFormData.skills && props.projectFormData.skills.map((skill, i) => (
+        {props.projectFormData.skills && props.projectFormData.skills.sort((a, b) => a.order > b.order ? 1 : -1).map((skill, i) => (
           <div key={skill.id}>
             <input
               name={skill.name}
