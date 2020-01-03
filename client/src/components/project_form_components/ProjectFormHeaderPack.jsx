@@ -4,7 +4,7 @@ export default (props) => {
 
   return (
     <div>
-      <p className='form-titles'>{props.title}</p>
+      <h1 className='form-titles'>{props.title}</h1>
       <div>
         <input
           name='title'

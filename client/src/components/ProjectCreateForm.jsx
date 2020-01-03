@@ -10,7 +10,7 @@ export default (props) => {
   return (
     <div className='form-containers'>
       <ProjectFormHeaderPack
-        title='Edit Project'
+        title='Create Project'
         projectFormData={props.projectFormData}
         handleChange={props.handleInputChange}
         setProjectFormData={props.setProjectFormData}
