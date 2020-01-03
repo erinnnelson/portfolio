@@ -2,6 +2,8 @@ import React from 'react';
 import { baseUrl } from '../services/api-helper';
 import github_color from '../assets/github_color.png'
 import Moment from 'react-moment';
+import ReactDOM from 'react-dom';
+import MarkdownRenderer from 'react-markdown-renderer';
 
 export default (props) => {
 
@@ -28,7 +30,9 @@ export default (props) => {
             <img className='github-img-links' src={github_color} title='Github' alt='github' />
           </a>
         </div>
-        <p>{props.project.description}</p>
+        <MarkdownRenderer
+          markdown={props.project.description}
+        />
         <br />
         {props.project.skills.sort((a, b) => a.order > b.order ? 1 : -1).map(skill => (
           <img key={skill.id} className='skill-images' src={attachBaseToUrl(skill.image)} title={skill.name} alt={skill.name} />
@@ -37,6 +41,6 @@ export default (props) => {
         <br />
       </div >
       {props.currentUser && <button onClick={() => props.openModal(true, props.project)}>update</button>}
-    </div>
+    </div >
   )
 }

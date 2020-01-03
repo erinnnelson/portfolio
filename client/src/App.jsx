@@ -636,6 +636,7 @@ function App(props) {
       }
 
       <Route exact path='/' render={() => (
+        
         <Main
           currentUser={currentUser}
           handleLogout={handleLogout}

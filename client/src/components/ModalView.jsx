@@ -22,7 +22,7 @@ export default (props) => {
           {props.projectIsEdit
             ?
             <ProjectEditForm
-              handleChange={props.handleProjectFormDataChange}
+              handleInputChange={props.handleProjectFormDataChange}
               handleCheckboxChange={props.handleProjectFormDataCheckboxChange}
               handleDropFileChange={props.handleProjectFormDataDropFileChange}
               projectFormData={props.projectEditFormData}
@@ -35,7 +35,7 @@ export default (props) => {
             />
             :
             <ProjectCreateForm
-              handleChange={props.handleProjectFormDataChange}
+              handleInputChange={props.handleProjectFormDataChange}
               handleCheckboxChange={props.handleProjectFormDataCheckboxChange}
               handleDropFileChange={props.handleProjectFormDataDropFileChange}
               projectFormData={props.projectCreateFormData}
