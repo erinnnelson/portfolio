@@ -13,8 +13,8 @@ export default (props) => {
     <div>
       <div>
         {props.skills.sort((a, b) => a.order > b.order ? 1 : -1).map(skill => (
-          <div>
-            <p onClick={() => props.updateSkillEditFormData(skill)}>{skill.name}</p>
+          <div key={skill.id}>
+            <p onClick={() => props.updateSkillEditFormData(skill)}>{`${skill.order} | ${skill.name}`}</p>
           </div>
         ))}
       </div>
@@ -31,7 +31,7 @@ export default (props) => {
         type='text'
         placeholder='Order...'
         autoComplete='off'
-        value={props.skillFormData.order}
+        value={props.skillFormData.order || ''}
         onChange={props.handleChange}
       />
       {props.skillFormData.update_image

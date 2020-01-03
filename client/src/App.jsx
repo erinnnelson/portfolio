@@ -10,7 +10,8 @@ import decode from 'jwt-decode';
 import './App.css';
 import Modal from 'react-modal-slider';
 import 'react-modal-slider/lib/main.css';
-import Register from './components/Register'
+import Register from './components/Register';
+import Hero from './components/Hero';
 
 function App(props) {
 
@@ -490,7 +491,7 @@ function App(props) {
   }
 
   const updateSkillEditFormData = (skill) => {
-    // console.log(skill.id)
+    console.log(skill)
     setEditSkillFormData({
       id: skill.id,
       name: skill.name,
@@ -636,16 +637,18 @@ function App(props) {
       }
 
       <Route exact path='/' render={() => (
-        
-        <Main
-          currentUser={currentUser}
-          handleLogout={handleLogout}
-          projects={projects}
-          projectFilter={projectFilter}
-          setProjectFilter={setProjectFilter}
-          projectCategories={currentProjectCategories}
-          openModal={openModal}
-        />
+        <div>
+          <Hero />
+          <Main
+            currentUser={currentUser}
+            handleLogout={handleLogout}
+            projects={projects}
+            projectFilter={projectFilter}
+            setProjectFilter={setProjectFilter}
+            projectCategories={currentProjectCategories}
+            openModal={openModal}
+          />
+        </div>
       )} />
 
       <Route exact path='/admin' render={() => (
