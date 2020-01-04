@@ -1,12 +1,62 @@
 body {
   text-align: center;
-  height: 100vh;
+  background-color: rgb(40, 40, 40);
+}
+
+#main-container {
+  position: relative;
+}
+
+#header {
+  background-color: rgb(40, 40, 40);
+  color: rgb(226, 226, 226);
+  font-family: 'Special Elite', cursive;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 3%;
+  height: 90px;
+}
+
+#header-title {
+  font-size: 52px;
+  margin: 20px 0;
+
+}
+
+#header-links-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-links {
+  margin: 0 5px;
 }
 
 #hero-container {
-  height: 100vh;
+  height: 120vh;
   width: 100%;
   background-color: rgb(40, 40, 40);
+  color: rgb(226, 226, 226);
+  position: relative;
+  font-family: 'Special Elite', cursive;
+}
+
+#hero-welcome-text-container {
+  height: 600px;
+  position: sticky;
+  top: 90px;
+  background-color: rgb(40, 40, 40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hero-welcome-text {
+  font-size: 24px;
+  margin: 0;
 }
 
 .auth-container {
@@ -23,6 +73,23 @@ textarea {
   resize: none;
 }
 
+#absolute-div {
+  position: absolute;
+  top: 90px;
+}
+
+#portfolio-container {
+  position: sticky;
+  top: 90px;
+  overflow: scroll;
+}
+
+#extra-scrolling-div {
+  height: 1000px;
+  width: 100px;
+  background-color: red;
+}
+
 #projects-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -33,8 +100,6 @@ textarea {
   margin: 0 auto 30px auto;
   
 }
-
-
 
 .projects-not-live {
   background-color: #565656b0

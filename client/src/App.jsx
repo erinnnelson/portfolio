@@ -11,7 +11,7 @@ import './App.css';
 import Modal from 'react-modal-slider';
 import 'react-modal-slider/lib/main.css';
 import Register from './components/Register';
-import Hero from './components/Hero';
+
 
 function App(props) {
 
@@ -638,7 +638,6 @@ function App(props) {
 
       <Route exact path='/' render={() => (
         <div>
-          <Hero />
           <Main
             currentUser={currentUser}
             handleLogout={handleLogout}
